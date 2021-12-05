@@ -27,7 +27,7 @@ Some examples are available in the `examples/` directory, which show the general
 
 ## Running Tests
 ```
-$ cd tests/
+$ cd test/
 $ mkdir build
 $ cd build
 $ cmake ..
