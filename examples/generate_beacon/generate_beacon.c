@@ -16,7 +16,7 @@ void create_write_beacon() {
     struct libwifi_beacon beacon = {0};
     unsigned char transmitter[6] = {0};
 
-    libwifi_random_mac(transmitter);
+    libwifi_random_mac(transmitter, NULL);
     unsigned char receiver[6] = "\xFF\xFF\xFF\xFF\xFF\xFF";
 
     libwifi_create_beacon(&beacon, receiver, transmitter, "libwifi-beacon", 6);
