@@ -21,7 +21,7 @@
 
 int libwifi_tag_iterator_init(struct libwifi_tag_iterator *it, const void *tags_start, size_t data_len) {
     it->tag_header = (struct libwifi_tag_header *) tags_start;
-    if (it->tag_header->tag_len < 0) {
+    if (it->tag_header->tag_len <= 0) {
         return -EINVAL;
     }
 
@@ -39,7 +39,7 @@ int libwifi_tag_iterator_next(struct libwifi_tag_iterator *it) {
     }
 
     it->tag_header = it->_next_tag_header;
-    if (it->tag_header->tag_len < 0) {
+    if (it->tag_header->tag_len <= 0) {
         return -1;
     }
 
