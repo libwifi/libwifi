@@ -109,12 +109,11 @@ void handle_pkt(unsigned char *args, const struct pcap_pkthdr *header, const uns
 }
 
 void helpexit() {
-    fprintf(stderr, "[!] Usage: ./parse_eapol --file <file.pcap>\n");
+    fprintf(stderr, "[!] Usage: ./parse_beacon --file <file.pcap>\n");
     exit(EXIT_FAILURE);
 }
 
 int main(int argc, char **argv) {
-    struct bpf_program *filter = NULL;
     pcap_t *handle = NULL;
     pcap_dumper_t *dumper = NULL;
     char errbuf[PCAP_ERRBUF_SIZE];
@@ -137,12 +136,6 @@ int main(int argc, char **argv) {
     }
     if (linktype != DLT_IEEE802_11 && linktype != DLT_IEEE802_11_RADIO) {
         fprintf(stderr, "[!] 802.11 and radiotap headers not provided (%d)\n", pcap_datalink(handle));
-        pcap_close(handle);
-        exit(EXIT_FAILURE);
-    }
-
-    if ((filter = malloc(sizeof(struct bpf_program))) == NULL) {
-        fprintf(stderr, "[!] There was an error allocating memory for the filter.\n");
         pcap_close(handle);
         exit(EXIT_FAILURE);
     }
