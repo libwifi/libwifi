@@ -41,21 +41,28 @@ size_t libwifi_get_assoc_resp_length(struct libwifi_assoc_resp *assoc_resp) {
  * Simple helper function to set the channel of an association response by removing and re-adding the
  * DS tagged parameter.
  */
-void libwifi_set_assoc_resp_channel(struct libwifi_assoc_resp *assoc_resp, uint8_t channel) {
+int libwifi_set_assoc_resp_channel(struct libwifi_assoc_resp *assoc_resp, uint8_t channel) {
+    int ret = 0;
+
     if (assoc_resp->tags.length != 0) {
-        libwifi_remove_tag(&assoc_resp->tags, TAG_DS_PARAMETER);
+        ret = libwifi_remove_tag(&assoc_resp->tags, TAG_DS_PARAMETER);
+        if (ret != 0) {
+            return ret;
+        }
     }
 
     const unsigned char *chan = (const unsigned char *) &channel;
 
-    libwifi_quick_add_tag(&assoc_resp->tags, TAG_DS_PARAMETER, chan, 1);
+    ret = libwifi_quick_add_tag(&assoc_resp->tags, TAG_DS_PARAMETER, chan, 1);
+
+    return ret;
 }
 
 /**
  * The generated association response frame is made with sane defaults defined in common.h and core/types.h.
  * Two tagged parameters are also added to the association response: Channel and Supported Rates.
  */
-void libwifi_create_assoc_resp(struct libwifi_assoc_resp *assoc_resp, const unsigned char receiver[6],
+int libwifi_create_assoc_resp(struct libwifi_assoc_resp *assoc_resp, const unsigned char receiver[6],
                                const unsigned char transmitter[6], uint8_t channel) {
     memset(assoc_resp, 0, sizeof(struct libwifi_assoc_resp));
 
@@ -71,7 +78,9 @@ void libwifi_create_assoc_resp(struct libwifi_assoc_resp *assoc_resp, const unsi
     libwifi_set_assoc_resp_channel(assoc_resp, channel);
 
     const unsigned char supported_rates[] = LIBWIFI_DEFAULT_SUPP_RATES;
-    libwifi_quick_add_tag(&assoc_resp->tags, TAG_SUPP_RATES, supported_rates, sizeof(supported_rates) - 1);
+    int ret = libwifi_quick_add_tag(&assoc_resp->tags, TAG_SUPP_RATES, supported_rates, sizeof(supported_rates) - 1);
+
+    return ret;
 }
 
 /**

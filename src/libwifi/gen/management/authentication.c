@@ -32,7 +32,7 @@ size_t libwifi_get_auth_length(struct libwifi_auth *auth) {
 /**
  * The generated authentication frame is made with sane defaults defined in common.h.
  */
-void libwifi_create_auth(struct libwifi_auth *auth, const unsigned char receiver[6],
+int libwifi_create_auth(struct libwifi_auth *auth, const unsigned char receiver[6],
                          const unsigned char transmitter[6], uint16_t algorithm_number,
                          uint16_t transaction_sequence, uint16_t status_code) {
     memset(auth, 0, sizeof(struct libwifi_auth));
@@ -47,6 +47,8 @@ void libwifi_create_auth(struct libwifi_auth *auth, const unsigned char receiver
     auth->fixed_parameters.algorithm_number = algorithm_number;
     auth->fixed_parameters.transaction_sequence = transaction_sequence;
     auth->fixed_parameters.status_code = status_code;
+
+    return 0;
 }
 
 /**

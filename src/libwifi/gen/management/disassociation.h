@@ -40,7 +40,7 @@ size_t libwifi_get_disassoc_length(struct libwifi_disassoc *disassoc);
  * @param reason_code The disassoc reason code
  *
  */
-void libwifi_create_disassoc(struct libwifi_disassoc *disassoc, const unsigned char receiver[6],
+int libwifi_create_disassoc(struct libwifi_disassoc *disassoc, const unsigned char receiver[6],
                              const unsigned char transmitter[6], uint16_t reason_code);
 
 /**

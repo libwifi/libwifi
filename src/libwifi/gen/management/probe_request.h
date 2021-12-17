@@ -40,7 +40,7 @@ size_t libwifi_get_probe_req_length(struct libwifi_probe_req *probe_req);
  * @param reason_code The probe_req reason code
  *
  */
-void libwifi_create_probe_req(struct libwifi_probe_req *probe_req, const unsigned char receiver[6],
+int libwifi_create_probe_req(struct libwifi_probe_req *probe_req, const unsigned char receiver[6],
                               const unsigned char transmitter[6], const unsigned char bssid[6],
                               const char *ssid, uint8_t channel);
 

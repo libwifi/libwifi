@@ -19,10 +19,11 @@
 #include "../../core/misc/epoch.h"
 #include "../../core/frame/tag.h"
 
+#include <errno.h>
 #include <stdlib.h>
 #include <string.h>
 
-void libwifi_create_timing_advert(struct libwifi_timing_advert *adv, const unsigned char destination[6],
+int libwifi_create_timing_advert(struct libwifi_timing_advert *adv, const unsigned char destination[6],
                                   const unsigned char transmitter[6], struct libwifi_timing_advert_fields *adv_fields,
                                   const char country[3], uint16_t max_reg_power, uint8_t max_tx_power, uint8_t tx_power_used,
                                   uint8_t noise_floor) {
@@ -45,7 +46,7 @@ void libwifi_create_timing_advert(struct libwifi_timing_advert *adv, const unsig
     adv->fixed_parameters.noise_floor = noise_floor;
 
     if (adv_fields == NULL) {
-        return;
+        return -EINVAL;
     }
 
     // Maximum element size is 17
@@ -78,7 +79,9 @@ void libwifi_create_timing_advert(struct libwifi_timing_advert *adv, const unsig
 
     element_data_len = offset;
 
-    libwifi_quick_add_tag(&adv->tags, TAG_TIME_ADVERTISEMENT, element_data, element_data_len);
+    int ret = libwifi_quick_add_tag(&adv->tags, TAG_TIME_ADVERTISEMENT, element_data, element_data_len);
+
+    return ret;
 }
 
 size_t libwifi_get_timing_advert_length(struct libwifi_timing_advert *adv) {

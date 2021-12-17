@@ -18,7 +18,7 @@
 
 #include "../../core/frame/management/timing_ad.h"
 
-void libwifi_create_timing_advert(struct libwifi_timing_advert *adv, const unsigned char destination[6],
+int libwifi_create_timing_advert(struct libwifi_timing_advert *adv, const unsigned char destination[6],
                                   const unsigned char transmitter[6], struct libwifi_timing_advert_fields *adv_fields,
                                   const char country[3], uint16_t max_reg_power, uint8_t max_tx_power, uint8_t tx_power_used,
                                   uint8_t noise_floor);

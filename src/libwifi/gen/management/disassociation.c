@@ -33,7 +33,7 @@ size_t libwifi_get_disassoc_length(struct libwifi_disassoc *disassoc) {
  * The generated disassociation frame contains only the supplied receiver, transmitter and reason_code by
  * default.
  */
-void libwifi_create_disassoc(struct libwifi_disassoc *disassoc, const unsigned char receiver[6],
+int libwifi_create_disassoc(struct libwifi_disassoc *disassoc, const unsigned char receiver[6],
                              const unsigned char transmitter[6], uint16_t reason_code) {
     memset(disassoc, 0, sizeof(struct libwifi_disassoc));
 
@@ -46,6 +46,8 @@ void libwifi_create_disassoc(struct libwifi_disassoc *disassoc, const unsigned c
     disassoc->frame_header.seq_control.sequence_number = (rand() % 4096);
 
     memcpy(&disassoc->fixed_parameters.reason_code, &reason_code, sizeof(reason_code));
+
+    return 0;
 }
 
 /**

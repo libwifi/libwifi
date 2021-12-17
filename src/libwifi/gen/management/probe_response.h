@@ -24,7 +24,7 @@
  * @param probe_resp A libwifi_probe_resp
  * @param ssid The new SSID
  */
-void libwifi_set_probe_resp_ssid(struct libwifi_probe_resp *probe_resp, const char *ssid);
+int libwifi_set_probe_resp_ssid(struct libwifi_probe_resp *probe_resp, const char *ssid);
 
 /**
  * Set the channel of a libwifi_probe_resp.
@@ -32,7 +32,7 @@ void libwifi_set_probe_resp_ssid(struct libwifi_probe_resp *probe_resp, const ch
  * @param probe_resp A libwifi_probe_resp
  * @param channel The new channel
  */
-void libwifi_set_probe_resp_channel(struct libwifi_probe_resp *probe_resp, uint8_t channel);
+int libwifi_set_probe_resp_channel(struct libwifi_probe_resp *probe_resp, uint8_t channel);
 
 /**
  * Calculate the length of a given libwifi_probe_resp
@@ -55,7 +55,7 @@ size_t libwifi_get_probe_resp_length(struct libwifi_probe_resp *probe_resp);
  * @param channel The desired channel of the probe_resp
  *
  */
-void libwifi_create_probe_resp(struct libwifi_probe_resp *probe_resp, const unsigned char receiver[6],
+int libwifi_create_probe_resp(struct libwifi_probe_resp *probe_resp, const unsigned char receiver[6],
                                const unsigned char transmitter[6], const char *ssid, uint8_t channel);
 
 /**

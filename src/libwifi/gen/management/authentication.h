@@ -40,7 +40,7 @@ size_t libwifi_get_auth_length(struct libwifi_auth *auth);
  * @param algorithm_number Algorithm type to use
  *
  */
-void libwifi_create_auth(struct libwifi_auth *auth, const unsigned char receiver[6],
+int libwifi_create_auth(struct libwifi_auth *auth, const unsigned char receiver[6],
                          const unsigned char transmitter[6], uint16_t algorithm_number,
                          uint16_t transaction_sequence, uint16_t status_code);
 
