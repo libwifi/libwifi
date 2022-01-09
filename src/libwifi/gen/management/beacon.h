@@ -24,7 +24,7 @@
  * @param beacon A struct libwifi_beacon
  * @param ssid The new SSID
  */
-void libwifi_set_beacon_ssid(struct libwifi_beacon *beacon, const char *ssid);
+int libwifi_set_beacon_ssid(struct libwifi_beacon *beacon, const char *ssid);
 
 /**
  * Set the channel of a struct libwifi_beacon.
@@ -32,7 +32,7 @@ void libwifi_set_beacon_ssid(struct libwifi_beacon *beacon, const char *ssid);
  * @param beacon A struct libwifi_beacon
  * @param channel The new channel
  */
-void libwifi_set_beacon_channel(struct libwifi_beacon *beacon, uint8_t channel);
+int libwifi_set_beacon_channel(struct libwifi_beacon *beacon, uint8_t channel);
 
 /**
  * Calculate the length of a given struct libwifi_beacon
@@ -55,7 +55,7 @@ size_t libwifi_get_beacon_length(struct libwifi_beacon *beacon);
  * @param channel The desired channel of the beacon
  *
  */
-void libwifi_create_beacon(struct libwifi_beacon *beacon, const unsigned char receiver[6],
+int libwifi_create_beacon(struct libwifi_beacon *beacon, const unsigned char receiver[6],
                            const unsigned char transmitter[6], const char *ssid, uint8_t channel);
 
 /**

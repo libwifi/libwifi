@@ -24,7 +24,7 @@
  * @param assoc_resp A libwifi_assoc_resp
  * @param channel The new channel
  */
-void libwifi_set_assoc_resp_channel(struct libwifi_assoc_resp *assoc_resp, uint8_t channel);
+int libwifi_set_assoc_resp_channel(struct libwifi_assoc_resp *assoc_resp, uint8_t channel);
 
 /**
  * Calculate the length of a given libwifi_assoc_resp
@@ -46,7 +46,7 @@ size_t libwifi_get_assoc_resp_length(struct libwifi_assoc_resp *assoc_resp);
  * @param channel The desired channel of the assoc_resp
  *
  */
-void libwifi_create_assoc_resp(struct libwifi_assoc_resp *assoc_resp, const unsigned char receiver[6],
+int libwifi_create_assoc_resp(struct libwifi_assoc_resp *assoc_resp, const unsigned char receiver[6],
                                const unsigned char transmitter[6], uint8_t channel);
 
 /**

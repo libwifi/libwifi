@@ -31,7 +31,7 @@ size_t libwifi_get_probe_req_length(struct libwifi_probe_req *probe_req) {
  * The generated probe request frame is made with sane defaults defined in common.h.
  * Two tagged parameters are also added to the beacon: SSID and Channel.
  */
-void libwifi_create_probe_req(struct libwifi_probe_req *probe_req, const unsigned char receiver[6],
+int libwifi_create_probe_req(struct libwifi_probe_req *probe_req, const unsigned char receiver[6],
                               const unsigned char transmitter[6], const unsigned char bssid[6],
                               const char *ssid, uint8_t channel) {
     memset(probe_req, 0, sizeof(struct libwifi_probe_req));
@@ -43,8 +43,13 @@ void libwifi_create_probe_req(struct libwifi_probe_req *probe_req, const unsigne
     memcpy(&probe_req->frame_header.addr3, bssid, 6);
     probe_req->frame_header.seq_control.sequence_number = (rand() % 4096);
 
-    libwifi_quick_add_tag(&probe_req->tags, TAG_SSID, (const unsigned char *) ssid, strlen(ssid));
-    libwifi_quick_add_tag(&probe_req->tags, TAG_DS_PARAMETER, (const unsigned char *) &channel, 1);
+    int ret = libwifi_quick_add_tag(&probe_req->tags, TAG_SSID, (const unsigned char *) ssid, strlen(ssid));
+    if (ret != 0) {
+        return ret;
+    }
+
+    ret = libwifi_quick_add_tag(&probe_req->tags, TAG_DS_PARAMETER, (const unsigned char *) &channel, 1);
+    return ret;
 }
 
 /**

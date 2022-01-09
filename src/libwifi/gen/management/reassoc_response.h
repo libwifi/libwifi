@@ -24,7 +24,7 @@
  * @param reassoc_resp A libwifi_reassoc_resp
  * @param channel The new channel
  */
-void libwifi_set_reassoc_resp_channel(struct libwifi_reassoc_resp *reassoc_resp, uint8_t channel);
+int libwifi_set_reassoc_resp_channel(struct libwifi_reassoc_resp *reassoc_resp, uint8_t channel);
 
 /**
  * Calculate the length of a given libwifi_reassoc_resp
@@ -46,7 +46,7 @@ size_t libwifi_get_reassoc_resp_length(struct libwifi_reassoc_resp *reassoc_resp
  * @param channel The desired channel of the reassoc_resp
  *
  */
-void libwifi_create_reassoc_resp(struct libwifi_reassoc_resp *reassoc_resp, const unsigned char receiver[6],
+int libwifi_create_reassoc_resp(struct libwifi_reassoc_resp *reassoc_resp, const unsigned char receiver[6],
                                  const unsigned char transmitter[6], uint8_t channel);
 
 /**

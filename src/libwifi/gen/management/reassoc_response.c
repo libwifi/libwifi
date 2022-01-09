@@ -41,21 +41,27 @@ size_t libwifi_get_reassoc_resp_length(struct libwifi_reassoc_resp *reassoc_resp
  * Simple helper to set the reassociation response DS tag by removing it and then adding it back with the new
  * value.
  */
-void libwifi_set_reassoc_resp_channel(struct libwifi_reassoc_resp *reassoc_resp, uint8_t channel) {
+int libwifi_set_reassoc_resp_channel(struct libwifi_reassoc_resp *reassoc_resp, uint8_t channel) {
+    int ret = 0;
+
     if (reassoc_resp->tags.length != 0) {
-        libwifi_remove_tag(&reassoc_resp->tags, TAG_DS_PARAMETER);
+        ret = libwifi_remove_tag(&reassoc_resp->tags, TAG_DS_PARAMETER);
+        if (ret != 0) {
+            return ret;
+        }
     }
 
     const unsigned char *chan = (const unsigned char *) &channel;
+    ret = libwifi_quick_add_tag(&reassoc_resp->tags, TAG_DS_PARAMETER, chan, 1);
 
-    libwifi_quick_add_tag(&reassoc_resp->tags, TAG_DS_PARAMETER, chan, 1);
+    return ret;
 }
 
 /**
  * The generated reassoc_resp frame is made with sane defaults defined in common.h.
  * Three tagged parameters are also added to the reassoc_resp: SSID, Channel and Supported Rates.
  */
-void libwifi_create_reassoc_resp(struct libwifi_reassoc_resp *reassoc_resp, const unsigned char receiver[6],
+int libwifi_create_reassoc_resp(struct libwifi_reassoc_resp *reassoc_resp, const unsigned char receiver[6],
                                  const unsigned char transmitter[6], uint8_t channel) {
     memset(reassoc_resp, 0, sizeof(struct libwifi_reassoc_resp));
 
@@ -68,10 +74,15 @@ void libwifi_create_reassoc_resp(struct libwifi_reassoc_resp *reassoc_resp, cons
     reassoc_resp->fixed_parameters.status_code = STATUS_SUCCESS;
     reassoc_resp->fixed_parameters.association_id = rand() % 4096;
 
-    libwifi_set_reassoc_resp_channel(reassoc_resp, channel);
+    int ret = libwifi_set_reassoc_resp_channel(reassoc_resp, channel);
+    if (ret != 0) {
+        return ret;
+    }
 
     const unsigned char supported_rates[] = LIBWIFI_DEFAULT_SUPP_RATES;
-    libwifi_quick_add_tag(&reassoc_resp->tags, TAG_SUPP_RATES, supported_rates, sizeof(supported_rates) - 1);
+    ret = libwifi_quick_add_tag(&reassoc_resp->tags, TAG_SUPP_RATES, supported_rates, sizeof(supported_rates) - 1);
+
+    return ret;
 }
 
 /**

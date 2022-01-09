@@ -49,10 +49,14 @@ int libwifi_create_reassoc_req(struct libwifi_reassoc_req *reassoc_req, const un
     reassoc_req->fixed_parameters.listen_interval = BYTESWAP16(LIBWIFI_DEFAULT_LISTEN_INTERVAL);
     memcpy(&reassoc_req->fixed_parameters.current_ap_address, current_ap, 6);
 
-    libwifi_quick_add_tag(&reassoc_req->tags, TAG_SSID, (const unsigned char *) ssid, strlen(ssid));
-    libwifi_quick_add_tag(&reassoc_req->tags, TAG_DS_PARAMETER, (const unsigned char *) &channel, 1);
+    int ret = libwifi_quick_add_tag(&reassoc_req->tags, TAG_SSID, (const unsigned char *) ssid, strlen(ssid));
+    if (ret != 0) {
+        return ret;
+    }
 
-    return 0;
+    ret = libwifi_quick_add_tag(&reassoc_req->tags, TAG_DS_PARAMETER, (const unsigned char *) &channel, 1);
+
+    return ret;
 }
 
 /**

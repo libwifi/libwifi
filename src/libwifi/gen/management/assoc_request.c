@@ -47,8 +47,15 @@ int libwifi_create_assoc_req(struct libwifi_assoc_req *assoc_req, const unsigned
     assoc_req->fixed_parameters.capabilities_information = BYTESWAP16(LIBWIFI_DEFAULT_AP_CAPABS);
     assoc_req->fixed_parameters.listen_interval = BYTESWAP16(LIBWIFI_DEFAULT_LISTEN_INTERVAL);
 
-    libwifi_quick_add_tag(&assoc_req->tags, TAG_SSID, (const unsigned char *) ssid, strlen(ssid));
-    libwifi_quick_add_tag(&assoc_req->tags, TAG_DS_PARAMETER, (const unsigned char *) &channel, 1);
+    int ret = libwifi_quick_add_tag(&assoc_req->tags, TAG_SSID, (const unsigned char *) ssid, strlen(ssid));
+    if (ret != 0) {
+        return ret;
+    }
+
+    ret = libwifi_quick_add_tag(&assoc_req->tags, TAG_DS_PARAMETER, (const unsigned char *) &channel, 1);
+    if (ret != 0) {
+        return ret;
+    }
 
     return 0;
 }

@@ -39,32 +39,46 @@ size_t libwifi_get_probe_resp_length(struct libwifi_probe_resp *probe_resp) {
 /**
  * Simple helper to set the probe response SSID tag by removing it and then adding it back with the new value.
  */
-void libwifi_set_probe_resp_ssid(struct libwifi_probe_resp *probe_resp, const char *ssid) {
+int libwifi_set_probe_resp_ssid(struct libwifi_probe_resp *probe_resp, const char *ssid) {
+    int ret = 0;
+
     if (probe_resp->tags.length != 0) {
-        libwifi_remove_tag(&probe_resp->tags, TAG_SSID);
+        ret = libwifi_remove_tag(&probe_resp->tags, TAG_SSID);
+        if (ret != 0) {
+            return ret;
+        }
     }
 
-    libwifi_quick_add_tag(&probe_resp->tags, TAG_SSID, (void *) ssid, strlen(ssid));
+    ret = libwifi_quick_add_tag(&probe_resp->tags, TAG_SSID, (void *) ssid, strlen(ssid));
+
+    return ret;
 }
 
 /**
  * Simple helper to set the probe response DS tag by removing it and then adding it back with the new value.
  */
-void libwifi_set_probe_resp_channel(struct libwifi_probe_resp *probe_resp, uint8_t channel) {
+int libwifi_set_probe_resp_channel(struct libwifi_probe_resp *probe_resp, uint8_t channel) {
+    int ret = 0;
+
     if (probe_resp->tags.length != 0) {
-        libwifi_remove_tag(&probe_resp->tags, TAG_DS_PARAMETER);
+        ret = libwifi_remove_tag(&probe_resp->tags, TAG_DS_PARAMETER);
+        if (ret != 0) {
+            return ret;
+        }
     }
 
     const unsigned char *chan = (const unsigned char *) &channel;
 
-    libwifi_quick_add_tag(&probe_resp->tags, TAG_DS_PARAMETER, chan, 1);
+    ret = libwifi_quick_add_tag(&probe_resp->tags, TAG_DS_PARAMETER, chan, 1);
+
+    return ret;
 }
 
 /**
  * The generated probe response frame is made with sane defaults defined in common.h.
  * Three tagged parameters are also added to the probe response: SSID, Channel and Supported Rates.
  */
-void libwifi_create_probe_resp(struct libwifi_probe_resp *probe_resp, const unsigned char receiver[6],
+int libwifi_create_probe_resp(struct libwifi_probe_resp *probe_resp, const unsigned char receiver[6],
                                const unsigned char transmitter[6], const char *ssid, uint8_t channel) {
     memset(probe_resp, 0, sizeof(struct libwifi_probe_resp));
 
@@ -79,11 +93,20 @@ void libwifi_create_probe_resp(struct libwifi_probe_resp *probe_resp, const unsi
     probe_resp->fixed_parameters.probe_resp_interval = BYTESWAP16(probe_resp_interval);
     probe_resp->fixed_parameters.capabilities_information = BYTESWAP16(LIBWIFI_DEFAULT_AP_CAPABS);
 
-    libwifi_set_probe_resp_ssid(probe_resp, ssid);
-    libwifi_set_probe_resp_channel(probe_resp, channel);
+    int ret = libwifi_set_probe_resp_ssid(probe_resp, ssid);
+    if (ret != 0) {
+        return ret;
+    }
+
+    ret = libwifi_set_probe_resp_channel(probe_resp, channel);
+    if (ret != 0) {
+        return ret;
+    }
 
     const unsigned char supported_rates[] = LIBWIFI_DEFAULT_SUPP_RATES;
-    libwifi_quick_add_tag(&probe_resp->tags, TAG_SUPP_RATES, supported_rates, sizeof(supported_rates) - 1);
+    ret = libwifi_quick_add_tag(&probe_resp->tags, TAG_SUPP_RATES, supported_rates, sizeof(supported_rates) - 1);
+
+    return ret;
 }
 
 /**
