@@ -303,4 +303,13 @@ size_t libwifi_dump_tag(struct libwifi_tagged_parameter *tag, unsigned char *buf
 int libwifi_quick_add_tag(struct libwifi_tagged_parameters *tagged_parameters, int tag_number,
                           const unsigned char *tag_data, size_t tag_length);
 
+/**
+ * Check if a tagged parameter is present via tag number.
+ *
+ * @param tags A tagged parameters list
+ * @param tag_number The number of the tagged parameter to find
+ * @returns The number of times the supplied tag_number was found in tags
+ */
+int libwifi_check_tag(struct libwifi_tagged_parameters *tags, int tag_number);
+
 #endif /* LIBWIFI_CORE_TAG_H */

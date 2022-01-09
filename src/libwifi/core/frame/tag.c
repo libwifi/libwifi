@@ -129,3 +129,19 @@ int libwifi_quick_add_tag(struct libwifi_tagged_parameters *tags, int tag_number
 
     return 0;
 }
+
+int libwifi_check_tag(struct libwifi_tagged_parameters *tags, int tag_number) {
+    int tag_count = 0;
+    struct libwifi_tag_iterator it = {0};
+    if (libwifi_tag_iterator_init(&it, tags->parameters, tags->length) != 0) {
+        return -EINVAL;
+    }
+
+    do {
+        if (it.tag_header->tag_num == tag_number) {
+                tag_count++;
+        }
+    } while (libwifi_tag_iterator_next(&it) != -1);
+
+    return tag_count;
+}
