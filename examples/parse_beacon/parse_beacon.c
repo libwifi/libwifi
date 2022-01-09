@@ -16,7 +16,9 @@ int print_tag_info(unsigned char *tag_data, size_t tag_data_len) {
     }
 
     do {
-        printf("\tTag: %d (Size: %d)\n", it.tag_header->tag_num, it.tag_header->tag_len);
+        printf("\tTag: %d (%s) (Size: %d)\n", it.tag_header->tag_num,
+                                              libwifi_get_tag_name(it.tag_header->tag_num),
+                                              it.tag_header->tag_len);
 
         int max_size = 16;
         if (it.tag_header->tag_len < 16) {
