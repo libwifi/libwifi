@@ -24,7 +24,7 @@ int print_tag_info(unsigned char *tag_data, size_t tag_data_len) {
         if (it.tag_header->tag_len < 16) {
             max_size = it.tag_header->tag_len;
         }
-        printf("\t%d bytes of Tag Data: ", max_size);
+        printf("\t\t%d bytes of Tag Data: ", max_size);
         for (size_t i = 0; i < max_size; i++) {
             printf("%02x ", it.tag_data[i]);
         }
