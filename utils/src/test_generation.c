@@ -1,10 +1,5 @@
 #include <errno.h>
 #include <libwifi.h>
-#include <libwifi/core/frame/management/action.h>
-#include <libwifi/core/frame/management/timing_ad.h>
-#include <libwifi/core/frame/tag.h>
-#include <libwifi/core/misc/types.h>
-#include <libwifi/gen/management/timing_ad.h>
 #include <pcap.h>
 #include <pcap/dlt.h>
 #include <pcap/pcap.h>

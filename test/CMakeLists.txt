@@ -53,6 +53,7 @@ add_test(NAME test_auth_gen_tags COMMAND auth_tests --auth-gen-tags)
 
 add_test(NAME test_beacon_gen_full COMMAND beacon_tests --beacon-gen-full)
 add_test(NAME test_beacon_gen_tags COMMAND beacon_tests --beacon-gen-tags)
+add_test(NAME test_beacon_parse COMMAND beacon_tests --beacon-parse)
 
 add_test(NAME test_deauth_gen_full COMMAND deauth_tests --deauth-gen-full)
 add_test(NAME test_deauth_gen_tags COMMAND deauth_tests --deauth-gen-tags)
