@@ -10,7 +10,7 @@ libwifi is a C library with a permissive license for generating and parsing a wi
 
 It is written with a simple-to-use approach while also exposing features that allow more advanced use, with clean and readable code being a priority. Other goals of the library include cross-architecture support, clean compilation without warnings and strict error checking.
 
-The library is fully documented with code comments in both the headers files and the code files, and also has doxygen HTML documentation in `docs/html`.
+The library is fully documented with code comments in both the headers files and the code files.
 
 ## Building and Installing
 ### Linux
@@ -26,14 +26,22 @@ $ sudo make install
 Some examples are available in the `examples/` directory, which show the general flow of how libwifi is used to generate and parse different types of 802.11 frame.
 
 ## Running Tests
+Using ctest, you can run the tests for the parse and generation functions of libwifi.
 ```
 $ cd test/
 $ mkdir build
 $ cd build
 $ cmake ..
-$ make
-$ sudo iw <interface> set type monitor && sudo ip link set dev <interface> up
-$ ./test-program
+$ make && make test
 ```
 
+## Using Utilities
+Included in the source are some utilities that use libwifi, and serve as references or examples if you need them.
+```
+$ cd utils/
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make
+```
 
