@@ -312,4 +312,12 @@ int libwifi_quick_add_tag(struct libwifi_tagged_parameters *tagged_parameters, i
  */
 int libwifi_check_tag(struct libwifi_tagged_parameters *tags, int tag_number);
 
+/**
+ * Get the name of a tagged parameter via a supplied tag number.
+ *
+ * @param tag_number The number of the tagged parameter to name
+ * @returns The name of the tag
+ */
+char* libwifi_get_tag_name(int tag_number);
+
 #endif /* LIBWIFI_CORE_TAG_H */
