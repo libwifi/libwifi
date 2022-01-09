@@ -421,7 +421,7 @@ void parse_packet(unsigned char *args, const struct pcap_pkthdr *header, const u
     unsigned char *data = (unsigned char *) packet;
 
     struct libwifi_frame frame = {0};
-    int ret = libwifi_get_wifi_frame(&frame, data, data_len, 1);
+    int ret = libwifi_get_wifi_frame(&frame, data, data_len, parse_radiotap_header);
     if (ret != 0) {
         printf("[!] Error getting libwifi_frame: %d\n", ret);
         return;
