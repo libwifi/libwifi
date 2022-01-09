@@ -484,6 +484,8 @@ char* libwifi_get_tag_name(int tag_number) {
             return "TAG_FINE_TIMING_MEASUREMENT_PARAMETERS";
         case TAG_VENDOR_SPECIFIC:
             return "TAG_VENDOR_SPECIFIC";
+        case TAG_ELEMENT_EXTENSION:
+            return "TAG_ELEMENT_EXTENSION";
         default:
             return "Unknown Tag";
     }

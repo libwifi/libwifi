@@ -205,7 +205,8 @@ enum libwifi_tag_numbers {
     TAG_FINE_TIMING_MEASUREMENT_PARAMETERS = 206,
     // Reserved 207-220
     TAG_VENDOR_SPECIFIC = 221,
-    // Reserved 222-254
+    // Reserved 222-254,
+    TAG_ELEMENT_EXTENSION = 255,
 };
 
 /**
