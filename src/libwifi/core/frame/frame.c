@@ -99,6 +99,7 @@ int libwifi_get_wifi_frame(struct libwifi_frame *fi, const unsigned char *frame,
             break;
         case TYPE_MANAGEMENT:
             if (frame_control->flags.ordered) {
+                fi->flags |= LIBWIFI_FLAGS_IS_ORDERED;
                 header_len = sizeof(struct libwifi_mgmt_ordered_frame_header);
                 if (frame_data_len < header_len) {
                     free(frame_data);

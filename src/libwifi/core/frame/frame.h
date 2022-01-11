@@ -24,6 +24,7 @@
 /* libwifi_frame Flags */
 #define LIBWIFI_FLAGS_FCS_PRESENT (1 << 0)
 #define LIBWIFI_FLAGS_IS_QOS (1 << 1)
+#define LIBWIFI_FLAGS_IS_ORDERED (1 << 2)
 
 /* Defined frame types and sub-types */
 enum libwifi_frame_type {
