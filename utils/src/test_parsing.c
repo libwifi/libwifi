@@ -132,9 +132,9 @@ void print_tag_info(unsigned char *data, size_t data_len) {
     } while (libwifi_tag_iterator_next(&it) != -1);
 }
 
-void parse_radiotap(const unsigned char *packet) {
+void parse_radiotap(const unsigned char *packet, size_t packet_len) {
     struct libwifi_radiotap_info rtap_info;
-    libwifi_parse_radiotap_info(&rtap_info, packet);
+    libwifi_parse_radiotap_info(&rtap_info, packet, packet_len);
 
     printf("=== Radiotap Parsing ===\n");
     printf("Radiotap Channel: %d\n", rtap_info.channel.freq);
@@ -166,7 +166,7 @@ void parse_beacon(struct libwifi_frame frame, unsigned char *args, const struct 
         }
 
         if (got_radiotap && parse_radiotap_header) {
-            parse_radiotap(packet);
+            parse_radiotap(packet, header->caplen);
         }
 
         print_bss_info(&bss);
@@ -184,7 +184,7 @@ void parse_probe_request(struct libwifi_frame frame, unsigned char *args, const 
         }
 
         if (got_radiotap && parse_radiotap_header) {
-            parse_radiotap(packet);
+            parse_radiotap(packet, header->caplen);
         }
 
         print_sta_info(&sta);
@@ -201,7 +201,7 @@ void parse_probe_response(struct libwifi_frame frame, unsigned char *args, const
         }
 
         if (got_radiotap && parse_radiotap_header) {
-            parse_radiotap(packet);
+            parse_radiotap(packet, header->caplen);
         }
 
         print_bss_info(&bss);
@@ -219,7 +219,7 @@ void parse_deauth(struct libwifi_frame frame, unsigned char *args, const struct 
         }
 
         if (got_radiotap && parse_radiotap_header) {
-            parse_radiotap(packet);
+            parse_radiotap(packet, header->caplen);
         }
 
         printf("=== Deauthentication Frame ===\n");
@@ -258,7 +258,7 @@ void parse_disassoc(struct libwifi_frame frame, unsigned char *args, const struc
         }
 
         if (got_radiotap && parse_radiotap_header) {
-            parse_radiotap(packet);
+            parse_radiotap(packet, header->caplen);
         }
 
         printf("=== Disassociation Frame ===\n");
@@ -296,7 +296,7 @@ void parse_assoc_request(struct libwifi_frame frame, unsigned char *args, const 
         }
 
         if (got_radiotap && parse_radiotap_header) {
-            parse_radiotap(packet);
+            parse_radiotap(packet, header->caplen);
         }
 
         print_sta_info(&sta);
@@ -313,7 +313,7 @@ void parse_assoc_response(struct libwifi_frame frame, unsigned char *args, const
         }
 
         if (got_radiotap && parse_radiotap_header) {
-            parse_radiotap(packet);
+            parse_radiotap(packet, header->caplen);
         }
 
         print_bss_info(&bss);
@@ -330,7 +330,7 @@ void parse_reassoc_request(struct libwifi_frame frame, unsigned char *args, cons
         }
 
         if (got_radiotap && parse_radiotap_header) {
-            parse_radiotap(packet);
+            parse_radiotap(packet, header->caplen);
         }
 
         print_sta_info(&sta);
@@ -347,7 +347,7 @@ void parse_reassoc_response(struct libwifi_frame frame, unsigned char *args, con
         }
 
         if (got_radiotap && parse_radiotap_header) {
-            parse_radiotap(packet);
+            parse_radiotap(packet, header->caplen);
         }
 
         print_bss_info(&bss);

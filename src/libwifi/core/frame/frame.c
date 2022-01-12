@@ -42,7 +42,7 @@ int libwifi_get_wifi_frame(struct libwifi_frame *fi, const unsigned char *frame,
 
     if (radiotap) {
         struct libwifi_radiotap_info rtap_info = {0};
-        libwifi_parse_radiotap_info(&rtap_info, frame_data);
+        libwifi_parse_radiotap_info(&rtap_info, frame_data, frame_len);
 
         // Skip forward by the length of the radiotap header
         frame_data_len -= rtap_info.length;

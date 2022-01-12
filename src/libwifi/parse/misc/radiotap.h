@@ -17,6 +17,7 @@
 #define LIBWIFI_PARSE_RADIOTAP_H
 
 #include "../../core/misc/radiotap.h"
+#include <stddef.h>
 #include <stdint.h>
 
 /**
@@ -25,8 +26,10 @@
  *
  * @param info A libwifi_radiotap_info
  * @param frame A raw 802.11 frame
- */
-void libwifi_parse_radiotap_info(struct libwifi_radiotap_info *info, const unsigned char *frame);
+ * @param frame_len Length of the given 802.11 frame
+ * @returns Negative errno on error, 0 on success
+*/
+int libwifi_parse_radiotap_info(struct libwifi_radiotap_info *info, const unsigned char *frame, size_t frame_len);
 
 /**
  * Retrieve the signal strength from a raw frame via radiotap header.
