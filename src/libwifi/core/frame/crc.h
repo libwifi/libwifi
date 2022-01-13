@@ -38,7 +38,14 @@ uint32_t libwifi_crc32(const unsigned char *message, int message_len);
 uint32_t libwifi_calculate_fcs(const unsigned char *frame, size_t frame_len);
 
 /**
- * Check if the given 802.11 frame has a valid FCS.
+ * Check if the given raw 802.11 frame has a valid FCS.
+ *
+ * This function relies on an assumption that the last 4 bytes of the supplied
+ * frame is the CRC, as stated in the Radiotap specification.
+ *
+ * You can check if the frame data has this field by using libwifi_get_wifi_frame()
+ * and then checking if the libwifi_frame's flags has the LIBWIFI_FLAGS_FCS_PRESENT
+ * bit set.
  *
  * @param frame An 802.11 frame with an FCS
  * @param frame_len Length of the frame

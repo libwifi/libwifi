@@ -49,15 +49,17 @@ uint32_t libwifi_calculate_fcs(const unsigned char *frame, size_t frame_len) {
 }
 
 /*
- * Verify a frame containing a FCS at the end to the FCS calculated
+ * Verify a raw frame containing a FCS at the end to the FCS calculated
  * by libwifi.
  */
 int libwifi_frame_verify(void *frame, size_t frame_len) {
-    uint32_t oCRC = *((uint32_t *) ((char *) frame + frame_len));
+    // A frame with a CRC will have the CRC placed at the end, and is 4 bytes long.
+    uint32_t oCRC = *((uint32_t *) ((char *) frame + (frame_len - 4)));
     uint32_t rCRC = libwifi_calculate_fcs(frame, frame_len);
 
     if (rCRC == oCRC) {
         return 1;
     }
+
     return 0;
 }
