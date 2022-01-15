@@ -77,14 +77,19 @@ int libwifi_set_beacon_channel(struct libwifi_beacon *beacon, uint8_t channel) {
  * The generated beacon frame is made with sane defaults defined in common.h.
  * Three tagged parameters are also added to the beacon: SSID, Channel and Supported Rates.
  */
-int libwifi_create_beacon(struct libwifi_beacon *beacon, const unsigned char receiver[6],
-                           const unsigned char transmitter[6], const char *ssid, uint8_t channel) {
+int libwifi_create_beacon(struct libwifi_beacon *beacon,
+                          const unsigned char receiver[6],
+                          const unsigned char transmitter[6],
+                          const unsigned char bssid[6],
+                          const char *ssid,
+                          uint8_t channel) {
     memset(beacon, 0, sizeof(struct libwifi_beacon));
 
     beacon->frame_header.frame_control.type = TYPE_MANAGEMENT;
     beacon->frame_header.frame_control.subtype = SUBTYPE_BEACON;
     memcpy(&beacon->frame_header.addr1, receiver, 6);
     memcpy(&beacon->frame_header.addr2, transmitter, 6);
+    memcpy(&beacon->frame_header.addr3, bssid, 6);
     beacon->frame_header.seq_control.sequence_number = (rand() % 4096);
 
     beacon->fixed_parameters.timestamp = BYTESWAP64(libwifi_get_epoch());

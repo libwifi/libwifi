@@ -1,5 +1,6 @@
 #include <errno.h>
 #include <libwifi.h>
+#include <libwifi/core/frame/tag.h>
 #include <pcap.h>
 #include <pcap/dlt.h>
 #include <pcap/pcap.h>
@@ -55,7 +56,8 @@ static unsigned char to[] = TO_MAC;
 static unsigned char from[] = FROM_MAC;
 static unsigned char bcast[] = BCAST_MAC;
 static unsigned char reassoc_mac[] = REASSOC_MAC;
-static unsigned char tag_data[] = "\x00\x00\00\x01This is a 221 tag from libwifi.\n";
+static unsigned char tag_data1[] = "\x00\x13\x37\x01Hello, World!\n";
+static unsigned char tag_data2[] = "\x00\x20\x91\x00Goodbye, World!\n";
 
 static int mode = 0;
 static int inject_mode = 0;
@@ -147,8 +149,9 @@ void inject_beacons(int random_mac) {
             } else {
                 memcpy(txmac, FROM_MAC, 6);
             }
-            libwifi_create_beacon(&beacon, bcast, txmac, BEACON_SSID, CHANNEL);
-            libwifi_quick_add_tag(&beacon.tags, TAG_VENDOR_SPECIFIC, tag_data, sizeof(tag_data));
+            libwifi_create_beacon(&beacon, bcast, txmac, txmac, "wifi-beacon", CHANNEL);
+            libwifi_quick_add_tag(&beacon.tags, TAG_VENDOR_SPECIFIC, tag_data1, sizeof(tag_data1));
+            libwifi_quick_add_tag(&beacon.tags, TAG_VENDOR_SPECIFIC, tag_data2, sizeof(tag_data2));
 
             unsigned char *buf = NULL;
             size_t buf_sz = libwifi_get_beacon_length(&beacon);
@@ -184,7 +187,7 @@ void inject_probe_responses() {
             memset(&probe_resp, 0, sizeof(struct libwifi_probe_resp));
 
             libwifi_create_probe_resp(&probe_resp, to, from, PROBE_RESP_SSID, CHANNEL);
-            libwifi_quick_add_tag(&probe_resp.tags, TAG_VENDOR_SPECIFIC, tag_data, sizeof(tag_data));
+            libwifi_quick_add_tag(&probe_resp.tags, TAG_VENDOR_SPECIFIC, tag_data1, sizeof(tag_data1));
 
             unsigned char *buf = NULL;
             size_t buf_sz = libwifi_get_probe_resp_length(&probe_resp);

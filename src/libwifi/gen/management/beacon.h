@@ -51,12 +51,17 @@ size_t libwifi_get_beacon_length(struct libwifi_beacon *beacon);
  * @param beacon A struct libwifi_beacon
  * @param receiver The receiver MAC address, aka address 1
  * @param transmitter The source MAC address, aka address 2
+ * @param bssid The BSSID MAC address, aka address 3
  * @param ssid The SSID of the beacon. Maximum length is 32 characters
  * @param channel The desired channel of the beacon
  *
  */
-int libwifi_create_beacon(struct libwifi_beacon *beacon, const unsigned char receiver[6],
-                           const unsigned char transmitter[6], const char *ssid, uint8_t channel);
+int libwifi_create_beacon(struct libwifi_beacon *beacon,
+                          const unsigned char receiver[6],
+                          const unsigned char transmitter[6],
+                          const unsigned char bssid[6],
+                          const char *ssid,
+                          uint8_t channel);
 
 /**
  * Dump a struct libwifi_beacon into a raw format for packet injection.
