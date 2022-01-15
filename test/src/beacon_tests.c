@@ -24,7 +24,7 @@ const unsigned char beacon[] = "\x00\x00\x18\x00\x8e\x58\x00\x00\x10\x02\x6c\x09
 int test_beacon_gen_full() {
     struct libwifi_beacon beacon = {0};
 
-    int ret = libwifi_create_beacon(&beacon, bcast, to, "Some SSID", 11);
+    int ret = libwifi_create_beacon(&beacon, bcast, to, to, "Some SSID", 11);
     if (ret != 0) {
         fprintf(stderr, "Failed to create beacon: %s\n", strerror(ret));
         return ret;
@@ -54,7 +54,7 @@ int test_beacon_gen_full() {
 int test_beacon_add_tag() {
     struct libwifi_beacon beacon = {0};
 
-    int ret = libwifi_create_beacon(&beacon, bcast, to, "Some SSID", 11);
+    int ret = libwifi_create_beacon(&beacon, bcast, to, to, "Some SSID", 11);
     if (ret != 0) {
         fprintf(stderr, "Failed to create beacon: %s\n", strerror(ret));
         return ret;
