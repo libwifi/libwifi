@@ -32,7 +32,8 @@
  */
 size_t libwifi_get_beacon_length(struct libwifi_beacon *beacon) {
     return sizeof(struct libwifi_mgmt_unordered_frame_header) +
-           sizeof(struct libwifi_beacon_fixed_parameters) + beacon->tags.length;
+           sizeof(struct libwifi_beacon_fixed_parameters) +
+           beacon->tags.length;
 }
 
 /**
@@ -75,12 +76,12 @@ int libwifi_set_beacon_channel(struct libwifi_beacon *beacon, uint8_t channel) {
 
 /**
  * The generated beacon frame is made with sane defaults defined in common.h.
- * Three tagged parameters are also added to the beacon: SSID, Channel and Supported Rates.
+ * Two tagged parameters are also added to the beacon: SSID and Channel.
  */
 int libwifi_create_beacon(struct libwifi_beacon *beacon,
                           const unsigned char receiver[6],
                           const unsigned char transmitter[6],
-                          const unsigned char bssid[6],
+                          const unsigned char address3[6],
                           const char *ssid,
                           uint8_t channel) {
     memset(beacon, 0, sizeof(struct libwifi_beacon));
@@ -89,18 +90,19 @@ int libwifi_create_beacon(struct libwifi_beacon *beacon,
     beacon->frame_header.frame_control.subtype = SUBTYPE_BEACON;
     memcpy(&beacon->frame_header.addr1, receiver, 6);
     memcpy(&beacon->frame_header.addr2, transmitter, 6);
-    memcpy(&beacon->frame_header.addr3, bssid, 6);
+    memcpy(&beacon->frame_header.addr3, address3, 6);
     beacon->frame_header.seq_control.sequence_number = (rand() % 4096);
 
     beacon->fixed_parameters.timestamp = BYTESWAP64(libwifi_get_epoch());
     beacon->fixed_parameters.beacon_interval = BYTESWAP16(LIBWIFI_DEFAULT_BEACON_INTERVAL);
     beacon->fixed_parameters.capabilities_information = BYTESWAP16(LIBWIFI_DEFAULT_AP_CAPABS);
 
-    libwifi_set_beacon_ssid(beacon, ssid);
-    libwifi_set_beacon_channel(beacon, channel);
+    int ret = libwifi_set_beacon_ssid(beacon, ssid);
+    if (ret != 0) {
+        return ret;
+    }
 
-    const unsigned char supported_rates[] = LIBWIFI_DEFAULT_SUPP_RATES;
-    int ret = libwifi_quick_add_tag(&beacon->tags, TAG_SUPP_RATES, supported_rates, sizeof(supported_rates) - 1);
+    ret = libwifi_set_beacon_channel(beacon, channel);
 
     return ret;
 }

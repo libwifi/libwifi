@@ -26,23 +26,28 @@
  */
 size_t libwifi_get_reassoc_req_length(struct libwifi_reassoc_req *reassoc_req) {
     return sizeof(struct libwifi_mgmt_unordered_frame_header) +
-           sizeof(struct libwifi_reassoc_req_fixed_parameters) + reassoc_req->tags.length;
+           sizeof(struct libwifi_reassoc_req_fixed_parameters) +
+           reassoc_req->tags.length;
 }
 
 /**
  * The generated reassociation request frame is made with sane defaults defined in common.h.
  * Two tagged parameters are also added to the reassociation frame: SSID and Channel
  */
-int libwifi_create_reassoc_req(struct libwifi_reassoc_req *reassoc_req, const unsigned char receiver[6],
-                               const unsigned char transmitter[6], const unsigned char current_ap[6],
-                               const char *ssid, uint8_t channel) {
+int libwifi_create_reassoc_req(struct libwifi_reassoc_req *reassoc_req,
+                               const unsigned char receiver[6],
+                               const unsigned char transmitter[6],
+                               const unsigned char address3[6],
+                               const unsigned char current_ap[6],
+                               const char *ssid,
+                               uint8_t channel) {
     memset(reassoc_req, 0, sizeof(struct libwifi_reassoc_req));
 
     reassoc_req->frame_header.frame_control.type = TYPE_MANAGEMENT;
     reassoc_req->frame_header.frame_control.subtype = SUBTYPE_REASSOC_REQ;
     memcpy(&reassoc_req->frame_header.addr1, receiver, 6);
     memcpy(&reassoc_req->frame_header.addr2, transmitter, 6);
-    memcpy(&reassoc_req->frame_header.addr3, receiver, 6);
+    memcpy(&reassoc_req->frame_header.addr3, address3, 6);
     reassoc_req->frame_header.seq_control.sequence_number = (rand() % 4096);
 
     reassoc_req->fixed_parameters.capabilities_information = BYTESWAP16(LIBWIFI_DEFAULT_AP_CAPABS);

@@ -18,15 +18,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-int libwifi_create_atim(struct libwifi_atim *atim, const unsigned char transmitter[6],
-                        const unsigned char receiver[6], const unsigned char bssid[6]) {
+int libwifi_create_atim(struct libwifi_atim *atim,
+                        const unsigned char transmitter[6],
+                        const unsigned char receiver[6],
+                        const unsigned char address3[6]) {
     memset(atim, 0, sizeof(struct libwifi_atim));
 
     atim->frame_header.frame_control.type = TYPE_MANAGEMENT;
     atim->frame_header.frame_control.subtype = SUBTYPE_ATIM;
     memcpy(&atim->frame_header.addr1, transmitter, 6);
     memcpy(&atim->frame_header.addr2, receiver, 6);
-    memcpy(&atim->frame_header.addr3, bssid, 6);
+    memcpy(&atim->frame_header.addr3, address3, 6);
     atim->frame_header.frame_control.flags.power_mgmt = 1;
     atim->frame_header.duration = (rand() % 4096);
     atim->frame_header.seq_control.sequence_number = (rand() % 4096);

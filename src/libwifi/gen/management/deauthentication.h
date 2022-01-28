@@ -24,7 +24,7 @@
  * Calculate the length of a given libwifi_deauth
  *
  * @param deauth A libwifi_deauth
- * @return The length of the given deauth
+ * @return       The length of the given deauth
  */
 size_t libwifi_get_deauth_length(struct libwifi_deauth *deauth);
 
@@ -34,22 +34,26 @@ size_t libwifi_get_deauth_length(struct libwifi_deauth *deauth);
  * A generated libwifi deauth can be "dumped" into a buffer for packet injection
  * via the libwifi_dump_deauth.
  *
- * @param deauth A libwifi_deauth
- * @param receiver The receiver MAC address, aka address 1
+ * @param deauth      A libwifi_deauth
+ * @param receiver    The receiver MAC address, aka address 1
  * @param transmitter The source MAC address, aka address 2
+ * @param address3    The address 3 frame field value, typically the BSSID
  * @param reason_code The deauth reason code
- *
+ * @return            Zero on success, or negative error
  */
-int libwifi_create_deauth(struct libwifi_deauth *deauth, const unsigned char receiver[6],
-                          const unsigned char transmitter[6], uint16_t reason_code);
+int libwifi_create_deauth(struct libwifi_deauth *deauth,
+                          const unsigned char receiver[6],
+                          const unsigned char transmitter[6],
+                          const unsigned char address3[6],
+                          uint16_t reason_code);
 
 /**
  * Dump a libwifi_deauth into a raw format for packet injection.
  *
- * @param deauth A libwifi_deauth
- * @param buf The output buffer for the frame data
+ * @param deauth  A libwifi_deauth
+ * @param buf     The output buffer for the frame data
  * @param buf_len The length of the output buffer
- * @return The length of the dumped deauth
+ * @return        The length of the dumped deauth, or negative error
  */
 size_t libwifi_dump_deauth(struct libwifi_deauth *deauth, unsigned char *buf, size_t buf_len);
 

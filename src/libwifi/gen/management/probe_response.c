@@ -32,7 +32,8 @@
  */
 size_t libwifi_get_probe_resp_length(struct libwifi_probe_resp *probe_resp) {
     return sizeof(struct libwifi_mgmt_unordered_frame_header) +
-           sizeof(struct libwifi_probe_resp_fixed_parameters) + probe_resp->tags.length;
+           sizeof(struct libwifi_probe_resp_fixed_parameters) +
+           probe_resp->tags.length;
 }
 
 /**
@@ -48,7 +49,7 @@ int libwifi_set_probe_resp_ssid(struct libwifi_probe_resp *probe_resp, const cha
         }
     }
 
-    ret = libwifi_quick_add_tag(&probe_resp->tags, TAG_SSID, (void *) ssid, strlen(ssid));
+    ret = libwifi_quick_add_tag(&probe_resp->tags, TAG_SSID, (const unsigned char *) ssid, strlen(ssid));
 
     return ret;
 }
@@ -75,16 +76,21 @@ int libwifi_set_probe_resp_channel(struct libwifi_probe_resp *probe_resp, uint8_
 
 /**
  * The generated probe response frame is made with sane defaults defined in common.h.
- * Three tagged parameters are also added to the probe response: SSID, Channel and Supported Rates.
+ * Two tagged parameters are also added to the probe response: SSID and Channel.
  */
-int libwifi_create_probe_resp(struct libwifi_probe_resp *probe_resp, const unsigned char receiver[6],
-                               const unsigned char transmitter[6], const char *ssid, uint8_t channel) {
+int libwifi_create_probe_resp(struct libwifi_probe_resp *probe_resp,
+                              const unsigned char receiver[6],
+                              const unsigned char transmitter[6],
+                              const unsigned char address3[6],
+                              const char *ssid,
+                              uint8_t channel) {
     memset(probe_resp, 0, sizeof(struct libwifi_probe_resp));
 
     probe_resp->frame_header.frame_control.type = TYPE_MANAGEMENT;
     probe_resp->frame_header.frame_control.subtype = SUBTYPE_PROBE_RESP;
     memcpy(&probe_resp->frame_header.addr1, receiver, 6);
     memcpy(&probe_resp->frame_header.addr2, transmitter, 6);
+    memcpy(&probe_resp->frame_header.addr3, address3, 6);
 
     probe_resp->frame_header.seq_control.sequence_number = (rand() % 4096);
     probe_resp->fixed_parameters.timestamp = BYTESWAP64(libwifi_get_epoch());
@@ -98,12 +104,6 @@ int libwifi_create_probe_resp(struct libwifi_probe_resp *probe_resp, const unsig
     }
 
     ret = libwifi_set_probe_resp_channel(probe_resp, channel);
-    if (ret != 0) {
-        return ret;
-    }
-
-    const unsigned char supported_rates[] = LIBWIFI_DEFAULT_SUPP_RATES;
-    ret = libwifi_quick_add_tag(&probe_resp->tags, TAG_SUPP_RATES, supported_rates, sizeof(supported_rates) - 1);
 
     return ret;
 }

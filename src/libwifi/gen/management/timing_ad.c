@@ -23,16 +23,23 @@
 #include <stdlib.h>
 #include <string.h>
 
-int libwifi_create_timing_advert(struct libwifi_timing_advert *adv, const unsigned char destination[6],
-                                  const unsigned char transmitter[6], struct libwifi_timing_advert_fields *adv_fields,
-                                  const char country[3], uint16_t max_reg_power, uint8_t max_tx_power, uint8_t tx_power_used,
-                                  uint8_t noise_floor) {
+int libwifi_create_timing_advert(struct libwifi_timing_advert *adv,
+                                 const unsigned char destination[6],
+                                 const unsigned char transmitter[6],
+                                 const unsigned char address3[6],
+                                 struct libwifi_timing_advert_fields *adv_fields,
+                                 const char country[3],
+                                 uint16_t max_reg_power,
+                                 uint8_t max_tx_power,
+                                 uint8_t tx_power_used,
+                                 uint8_t noise_floor) {
     memset(adv, 0, sizeof(struct libwifi_timing_advert));
 
     adv->frame_header.frame_control.type = TYPE_MANAGEMENT;
     adv->frame_header.frame_control.subtype = SUBTYPE_TIME_ADV;
     memcpy(&adv->frame_header.addr1, destination, 6);
     memcpy(&adv->frame_header.addr2, transmitter, 6);
+    memcpy(&adv->frame_header.addr3, address3, 6);
     adv->frame_header.seq_control.sequence_number = (rand() % 4096);
 
     adv->fixed_parameters.timestamp = BYTESWAP64(libwifi_get_epoch());

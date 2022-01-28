@@ -33,7 +33,8 @@
  */
 size_t libwifi_get_reassoc_resp_length(struct libwifi_reassoc_resp *reassoc_resp) {
     return sizeof(struct libwifi_mgmt_unordered_frame_header) +
-           sizeof(struct libwifi_reassoc_resp_fixed_parameters) + reassoc_resp->tags.length;
+           sizeof(struct libwifi_reassoc_resp_fixed_parameters) +
+           reassoc_resp->tags.length;
 }
 
 /**
@@ -58,28 +59,26 @@ int libwifi_set_reassoc_resp_channel(struct libwifi_reassoc_resp *reassoc_resp, 
 
 /**
  * The generated reassoc_resp frame is made with sane defaults defined in common.h.
- * Three tagged parameters are also added to the reassoc_resp: SSID, Channel and Supported Rates.
+ * One tagged parameters is also added to the reassoc_resp: Channel.
  */
-int libwifi_create_reassoc_resp(struct libwifi_reassoc_resp *reassoc_resp, const unsigned char receiver[6],
-                                 const unsigned char transmitter[6], uint8_t channel) {
+int libwifi_create_reassoc_resp(struct libwifi_reassoc_resp *reassoc_resp,
+                                const unsigned char receiver[6],
+                                const unsigned char transmitter[6],
+                                const unsigned char address3[6],
+                                uint8_t channel) {
     memset(reassoc_resp, 0, sizeof(struct libwifi_reassoc_resp));
 
     reassoc_resp->frame_header.frame_control.type = TYPE_MANAGEMENT;
     reassoc_resp->frame_header.frame_control.subtype = SUBTYPE_REASSOC_RESP;
     memcpy(&reassoc_resp->frame_header.addr1, receiver, 6);
     memcpy(&reassoc_resp->frame_header.addr2, transmitter, 6);
+    memcpy(&reassoc_resp->frame_header.addr3, address3, 6);
 
     reassoc_resp->fixed_parameters.capabilities_information = BYTESWAP16(LIBWIFI_DEFAULT_AP_CAPABS);
     reassoc_resp->fixed_parameters.status_code = STATUS_SUCCESS;
     reassoc_resp->fixed_parameters.association_id = rand() % 4096;
 
     int ret = libwifi_set_reassoc_resp_channel(reassoc_resp, channel);
-    if (ret != 0) {
-        return ret;
-    }
-
-    const unsigned char supported_rates[] = LIBWIFI_DEFAULT_SUPP_RATES;
-    ret = libwifi_quick_add_tag(&reassoc_resp->tags, TAG_SUPP_RATES, supported_rates, sizeof(supported_rates) - 1);
 
     return ret;
 }

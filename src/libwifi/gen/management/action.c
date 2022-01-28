@@ -46,15 +46,18 @@ void libwifi_free_action_detail(struct libwifi_action_detail *detail) {
     }
 }
 
-int libwifi_create_action(struct libwifi_action *action, const unsigned char receiver[6],
-                          const unsigned char transmitter[6], uint8_t category) {
+int libwifi_create_action(struct libwifi_action *action,
+                          const unsigned char receiver[6],
+                          const unsigned char transmitter[6],
+                          const unsigned char address3[6],
+                          uint8_t category) {
     memset(action, 0, sizeof(struct libwifi_action));
 
     action->frame_header.frame_control.type = TYPE_MANAGEMENT;
     action->frame_header.frame_control.subtype = SUBTYPE_ACTION;
     memcpy(&action->frame_header.addr1, receiver, 6);
     memcpy(&action->frame_header.addr2, transmitter, 6);
-    memcpy(&action->frame_header.addr3, transmitter, 6);
+    memcpy(&action->frame_header.addr3, address3, 6);
 
     action->frame_header.seq_control.sequence_number = (rand() % 4096);
 
@@ -63,15 +66,18 @@ int libwifi_create_action(struct libwifi_action *action, const unsigned char rec
     return 0;
 }
 
-int libwifi_create_action_no_ack(struct libwifi_action *action, const unsigned char receiver[6],
-                                 const unsigned char transmitter[6], uint8_t category) {
+int libwifi_create_action_no_ack(struct libwifi_action *action,
+                                 const unsigned char receiver[6],
+                                 const unsigned char transmitter[6],
+                                 const unsigned char address3[6],
+                                 uint8_t category) {
     memset(action, 0, sizeof(struct libwifi_action));
 
     action->frame_header.frame_control.type = TYPE_MANAGEMENT;
     action->frame_header.frame_control.subtype = SUBTYPE_ACTION_NOACK;
     memcpy(&action->frame_header.addr1, receiver, 6);
     memcpy(&action->frame_header.addr2, transmitter, 6);
-    memcpy(&action->frame_header.addr3, transmitter, 6);
+    memcpy(&action->frame_header.addr3, address3, 6);
 
     action->frame_header.seq_control.sequence_number = (rand() % 4096);
 

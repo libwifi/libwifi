@@ -33,15 +33,18 @@ size_t libwifi_get_assoc_req_length(struct libwifi_assoc_req *assoc_req) {
  * The generated association request frame is made with sane defaults defined in common.h.
  * Two tagged parameters are also added to the association request: SSID and Channel.
  */
-int libwifi_create_assoc_req(struct libwifi_assoc_req *assoc_req, const unsigned char receiver[6],
-                             const unsigned char transmitter[6], const char *ssid, uint8_t channel) {
+int libwifi_create_assoc_req(struct libwifi_assoc_req *assoc_req,
+                             const unsigned char receiver[6],
+                             const unsigned char transmitter[6],
+                             const unsigned char address3[6],
+                             const char *ssid, uint8_t channel) {
     memset(assoc_req, 0, sizeof(struct libwifi_assoc_req));
 
     assoc_req->frame_header.frame_control.type = TYPE_MANAGEMENT;
     assoc_req->frame_header.frame_control.subtype = SUBTYPE_ASSOC_REQ;
     memcpy(&assoc_req->frame_header.addr1, receiver, 6);
     memcpy(&assoc_req->frame_header.addr2, transmitter, 6);
-    memcpy(&assoc_req->frame_header.addr3, receiver, 6);
+    memcpy(&assoc_req->frame_header.addr3, address3, 6);
     assoc_req->frame_header.seq_control.sequence_number = (rand() % 4096);
 
     assoc_req->fixed_parameters.capabilities_information = BYTESWAP16(LIBWIFI_DEFAULT_AP_CAPABS);
