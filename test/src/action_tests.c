@@ -12,7 +12,7 @@ const unsigned char bcast[] = BCAST_MAC;
 int test_action_gen_full() {
     struct libwifi_action action = {0};
 
-    int ret = libwifi_create_action(&action, bcast, to, ACTION_HT);
+    int ret = libwifi_create_action(&action, bcast, to, to, ACTION_HT);
     if (ret != 0) {
         fprintf(stderr, "Failed to create action: %s\n", strerror(ret));
         return ret;
@@ -42,7 +42,7 @@ int test_action_gen_full() {
 int test_action_add_detail() {
     struct libwifi_action action = {0};
 
-    int ret = libwifi_create_action(&action, bcast, to, ACTION_HT);
+    int ret = libwifi_create_action(&action, bcast, to, to, ACTION_HT);
     if (ret != 0) {
         fprintf(stderr, "Failed to create action: %s\n", strerror(ret));
         return ret;

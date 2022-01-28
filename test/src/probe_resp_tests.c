@@ -12,7 +12,7 @@ const unsigned char bcast[] = BCAST_MAC;
 int test_probe_resp_gen_full() {
     struct libwifi_probe_resp probe_resp = {0};
 
-    int ret = libwifi_create_probe_resp(&probe_resp, bcast, to, "Some SSID", 11);
+    int ret = libwifi_create_probe_resp(&probe_resp, bcast, to, to, "Some SSID", 11);
     if (ret != 0) {
         fprintf(stderr, "Failed to create probe_resp: %s\n", strerror(ret));
         return ret;
@@ -42,7 +42,7 @@ int test_probe_resp_gen_full() {
 int test_probe_resp_add_tag() {
     struct libwifi_probe_resp probe_resp = {0};
 
-    int ret = libwifi_create_probe_resp(&probe_resp, bcast, to, "Some SSID", 11);
+    int ret = libwifi_create_probe_resp(&probe_resp, bcast, to, to, "Some SSID", 11);
     if (ret != 0) {
         fprintf(stderr, "Failed to create probe_resp: %s\n", strerror(ret));
         return ret;

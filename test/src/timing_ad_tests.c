@@ -19,7 +19,7 @@ int test_timing_ad_gen_full() {
     memcpy(ad_fields.time_value,
           "\xAA\xAA\xAA\xAA\xAA\xAA\xAA\xAA\xAA\xAA", 10);
 
-    int ret = libwifi_create_timing_advert(&time_ad, to, to, &ad_fields, "GB", -56, -56, -30, -20);
+    int ret = libwifi_create_timing_advert(&time_ad, bcast, to, to, &ad_fields, "GB", -56, -56, -30, -20);
     if (ret != 0) {
         fprintf(stderr, "Failed to create timing advert\n");
         return ret;

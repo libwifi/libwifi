@@ -12,7 +12,7 @@ const unsigned char bcast[] = BCAST_MAC;
 int test_auth_gen_full() {
     struct libwifi_auth auth = {0};
 
-    int ret = libwifi_create_auth(&auth, bcast, to, 0, 100, STATUS_SUCCESS);
+    int ret = libwifi_create_auth(&auth, bcast, to, to, 0, 100, STATUS_SUCCESS);
     if (ret != 0) {
         fprintf(stderr, "Failed to create auth: %s\n", strerror(ret));
         return ret;
@@ -42,7 +42,7 @@ int test_auth_gen_full() {
 int test_auth_add_tag() {
     struct libwifi_auth auth = {0};
 
-    int ret = libwifi_create_auth(&auth, bcast, to, 0, 100, STATUS_SUCCESS);
+    int ret = libwifi_create_auth(&auth, bcast, to, to, 0, 100, STATUS_SUCCESS);
     if (ret != 0) {
         fprintf(stderr, "Failed to create auth: %s\n", strerror(ret));
         return ret;

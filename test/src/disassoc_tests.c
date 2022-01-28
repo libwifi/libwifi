@@ -12,7 +12,7 @@ const unsigned char bcast[] = BCAST_MAC;
 int test_disassoc_gen_full() {
     struct libwifi_disassoc disassoc = {0};
 
-    int ret = libwifi_create_disassoc(&disassoc, bcast, to, REASON_STA_LEAVING);
+    int ret = libwifi_create_disassoc(&disassoc, bcast, to, to, REASON_STA_LEAVING);
     if (ret != 0) {
         fprintf(stderr, "Failed to create disassoc: %s\n", strerror(ret));
         return ret;
@@ -42,7 +42,7 @@ int test_disassoc_gen_full() {
 int test_disassoc_add_tag() {
     struct libwifi_disassoc disassoc = {0};
 
-    int ret = libwifi_create_disassoc(&disassoc, bcast, to, REASON_STA_LEAVING);
+    int ret = libwifi_create_disassoc(&disassoc, bcast, to, to, REASON_STA_LEAVING);
     if (ret != 0) {
         fprintf(stderr, "Failed to create disassoc: %s\n", strerror(ret));
         return ret;

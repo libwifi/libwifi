@@ -6,13 +6,15 @@
 
 #define BCAST_MAC "\xff\xff\xff\xff\xff\xff"
 #define TO_MAC "\x00\x20\x91\xAA\xBB\xCC"
+#define CURRENT_AP "\x00\x20\x91\x00\x11\x22"
 const unsigned char to[] = TO_MAC;
 const unsigned char bcast[] = BCAST_MAC;
+const unsigned char current_ap[] = CURRENT_AP;
 
 int test_reassoc_resp_gen_full() {
     struct libwifi_reassoc_resp reassoc_resp = {0};
 
-    int ret = libwifi_create_reassoc_resp(&reassoc_resp, bcast, to, 11);
+    int ret = libwifi_create_reassoc_resp(&reassoc_resp, bcast, to, current_ap, 11);
     if (ret != 0) {
         fprintf(stderr, "Failed to create reassoc_resp: %s\n", strerror(ret));
         return ret;
@@ -42,7 +44,7 @@ int test_reassoc_resp_gen_full() {
 int test_reassoc_resp_add_tag() {
     struct libwifi_reassoc_resp reassoc_resp = {0};
 
-    int ret = libwifi_create_reassoc_resp(&reassoc_resp, bcast, to, 11);
+    int ret = libwifi_create_reassoc_resp(&reassoc_resp, bcast, to, current_ap, 11);
     if (ret != 0) {
         fprintf(stderr, "Failed to create reassoc_resp: %s\n", strerror(ret));
         return ret;

@@ -12,7 +12,7 @@ const unsigned char bcast[] = BCAST_MAC;
 int test_deauth_gen_full() {
     struct libwifi_deauth deauth = {0};
 
-    int ret = libwifi_create_deauth(&deauth, bcast, to, REASON_STA_LEAVING);
+    int ret = libwifi_create_deauth(&deauth, bcast, to, to, REASON_STA_LEAVING);
     if (ret != 0) {
         fprintf(stderr, "Failed to create deauth: %s\n", strerror(ret));
         return ret;
@@ -42,7 +42,7 @@ int test_deauth_gen_full() {
 int test_deauth_add_tag() {
     struct libwifi_deauth deauth = {0};
 
-    int ret = libwifi_create_deauth(&deauth, bcast, to, REASON_STA_LEAVING);
+    int ret = libwifi_create_deauth(&deauth, bcast, to, to, REASON_STA_LEAVING);
     if (ret != 0) {
         fprintf(stderr, "Failed to create deauth: %s\n", strerror(ret));
         return ret;
