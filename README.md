@@ -13,11 +13,20 @@ It is written with a simple-to-use approach while also exposing features that al
 The library is fully documented with code comments in both the headers files and the code files.
 
 ## Building and Installing
-### Linux
+### Building as Release
 ```
 $ mkdir build
 $ cd build
 $ cmake ..
+$ make
+$ sudo make install
+```
+### Building as Debug
+You can also specify `-DCMAKE_BUILD_TYPE=Debug` to CMake, to generate a library with debug symbols present. This also sets the library version number to `dev-BRANCHNAME-COMMITHASH`.
+```
+$ mkdir build
+$ cd build
+$ cmake .. -DCMAKE_BUILD_TYPE=Debug
 $ make
 $ sudo make install
 ```
