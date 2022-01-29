@@ -37,7 +37,8 @@ int libwifi_create_assoc_req(struct libwifi_assoc_req *assoc_req,
                              const unsigned char receiver[6],
                              const unsigned char transmitter[6],
                              const unsigned char address3[6],
-                             const char *ssid, uint8_t channel) {
+                             const char *ssid,
+                             uint8_t channel) {
     memset(assoc_req, 0, sizeof(struct libwifi_assoc_req));
 
     assoc_req->frame_header.frame_control.type = TYPE_MANAGEMENT;
