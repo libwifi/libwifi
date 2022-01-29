@@ -30,6 +30,10 @@ $ cmake .. -DCMAKE_BUILD_TYPE=Debug
 $ make
 $ sudo make install
 ```
+```
+$ ./test_misc
+libwifi version: dev-fixup-7909700
+```
 
 ## Examples
 Some examples are available in the `examples/` directory, which show the general flow of how libwifi is used to generate and parse different types of 802.11 frame.
