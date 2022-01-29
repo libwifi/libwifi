@@ -16,7 +16,9 @@
 #ifndef LIBWIFI_CORE_H
 #define LIBWIFI_CORE_H
 
-#define LIBWIFI_VERSION "0.0.1"
+#ifndef LIBWIFI_VERSION
+#define LIBWIFI_VERSION "UNSET_VERSION"
+#endif
 
 /**
  * Commonly used fixed fields

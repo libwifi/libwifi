@@ -33,15 +33,18 @@ size_t libwifi_get_deauth_length(struct libwifi_deauth *deauth) {
  * The generated deauthentication frame contains only the supplied receiver, transmitter and reason_code by
  * default.
  */
-int libwifi_create_deauth(struct libwifi_deauth *deauth, const unsigned char receiver[6],
-                          const unsigned char transmitter[6], uint16_t reason_code) {
+int libwifi_create_deauth(struct libwifi_deauth *deauth,
+                          const unsigned char receiver[6],
+                          const unsigned char transmitter[6],
+                          const unsigned char address3[6],
+                          uint16_t reason_code) {
     memset(deauth, 0, sizeof(struct libwifi_deauth));
 
     deauth->frame_header.frame_control.type = TYPE_MANAGEMENT;
     deauth->frame_header.frame_control.subtype = SUBTYPE_DEAUTH;
     memcpy(&deauth->frame_header.addr1, receiver, 6);
     memcpy(&deauth->frame_header.addr2, transmitter, 6);
-    memcpy(&deauth->frame_header.addr3, transmitter, 6);
+    memcpy(&deauth->frame_header.addr3, address3, 6);
 
     deauth->frame_header.seq_control.sequence_number = (rand() % 4096);
 

@@ -24,7 +24,7 @@
  * Calculate the length of a given libwifi_disassoc
  *
  * @param disassoc A libwifi_disassoc
- * @return The length of the given disassoc
+ * @return         The length of the given disassoc, or negative error
  */
 size_t libwifi_get_disassoc_length(struct libwifi_disassoc *disassoc);
 
@@ -34,22 +34,26 @@ size_t libwifi_get_disassoc_length(struct libwifi_disassoc *disassoc);
  * A generated libwifi disassoc can be "dumped" into a buffer for packet injection
  * via the libwifi_dump_disassoc.
  *
- * @param disassoc A libwifi_disassoc
- * @param receiver The receiver MAC address, aka address 1
+ * @param disassoc    A libwifi_disassoc
+ * @param receiver    The receiver MAC address, aka address 1
  * @param transmitter The source MAC address, aka address 2
+ * @param address3    The address 3 frame field value, typically the BSSID
  * @param reason_code The disassoc reason code
- *
+ * @return            Zero on success, or negative error
  */
-int libwifi_create_disassoc(struct libwifi_disassoc *disassoc, const unsigned char receiver[6],
-                             const unsigned char transmitter[6], uint16_t reason_code);
+int libwifi_create_disassoc(struct libwifi_disassoc *disassoc,
+                            const unsigned char receiver[6],
+                            const unsigned char transmitter[6],
+                            const unsigned char address3[6],
+                            uint16_t reason_code);
 
 /**
  * Dump a libwifi_disassoc into a raw format for packet injection.
  *
  * @param disassoc A libwifi_disassoc
- * @param buf The output buffer for the frame data
- * @param buf_len The length of the output buffer
- * @return The length of the dumped disassoc
+ * @param buf      The output buffer for the frame data
+ * @param buf_len  The length of the output buffer
+ * @return         The length of the dumped disassoc, or negative error
  */
 size_t libwifi_dump_disassoc(struct libwifi_disassoc *disassoc, unsigned char *buf, size_t buf_len);
 

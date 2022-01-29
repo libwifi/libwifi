@@ -33,7 +33,8 @@
  */
 size_t libwifi_get_assoc_resp_length(struct libwifi_assoc_resp *assoc_resp) {
     return sizeof(struct libwifi_mgmt_unordered_frame_header) +
-           sizeof(struct libwifi_assoc_resp_fixed_parameters) + assoc_resp->tags.length;
+           sizeof(struct libwifi_assoc_resp_fixed_parameters) +
+           assoc_resp->tags.length;
 }
 
 /**
@@ -61,14 +62,18 @@ int libwifi_set_assoc_resp_channel(struct libwifi_assoc_resp *assoc_resp, uint8_
  * The generated association response frame is made with sane defaults defined in common.h and core/types.h.
  * Two tagged parameters are also added to the association response: Channel and Supported Rates.
  */
-int libwifi_create_assoc_resp(struct libwifi_assoc_resp *assoc_resp, const unsigned char receiver[6],
-                               const unsigned char transmitter[6], uint8_t channel) {
+int libwifi_create_assoc_resp(struct libwifi_assoc_resp *assoc_resp,
+                              const unsigned char receiver[6],
+                              const unsigned char transmitter[6],
+                              const unsigned char address3[6],
+                              uint8_t channel) {
     memset(assoc_resp, 0, sizeof(struct libwifi_assoc_resp));
 
     assoc_resp->frame_header.frame_control.type = TYPE_MANAGEMENT;
     assoc_resp->frame_header.frame_control.subtype = SUBTYPE_ASSOC_RESP;
     memcpy(&assoc_resp->frame_header.addr1, receiver, 6);
     memcpy(&assoc_resp->frame_header.addr2, transmitter, 6);
+    memcpy(&assoc_resp->frame_header.addr3, address3, 6);
 
     assoc_resp->fixed_parameters.capabilities_information = BYTESWAP16(LIBWIFI_DEFAULT_AP_CAPABS);
     assoc_resp->fixed_parameters.status_code = STATUS_SUCCESS;

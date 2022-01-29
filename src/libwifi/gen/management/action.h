@@ -23,12 +23,13 @@
  * Create a detail for an action frame by supplying raw data and it's length.
  * New data can be added to an existing libwifi_action_detail.
  *
- * @param detail  A libwifi_action_detail struct
- * @param data    Raw data to be added to the libwifi_action_detail
+ * @param detail   A libwifi_action_detail struct
+ * @param data     Raw data to be added to the libwifi_action_detail
  * @param data_len Length of the raw data
- * @return Length of the action
+ * @return         Length of the action, or negative error
  */
-size_t libwifi_add_action_detail(struct libwifi_action_detail *detail, const unsigned char *data,
+size_t libwifi_add_action_detail(struct libwifi_action_detail *detail,
+                                 const unsigned char *data,
                                  size_t data_len);
 
 /**
@@ -44,13 +45,20 @@ void libwifi_free_action_detail(struct libwifi_action_detail *detail);
  * @param action      A new libwifi_action struct
  * @param receiver    The receiver MAC address
  * @param transmitter The transmitter MAC address
+ * @param address3    The address 3 frame field value, typically the BSSID
  * @param category    The action frame category
- * @return zero on success
+ * @return            Zero on success, or negative error
  */
-int libwifi_create_action(struct libwifi_action *action, const unsigned char receiver[6],
-                          const unsigned char transmitter[6], uint8_t category);
-int libwifi_create_action_no_ack(struct libwifi_action *action, const unsigned char receiver[6],
-                                 const unsigned char transmitter[6], uint8_t category);
+int libwifi_create_action(struct libwifi_action *action,
+                          const unsigned char receiver[6],
+                          const unsigned char transmitter[6],
+                          const unsigned char address3[6],
+                          uint8_t category);
+int libwifi_create_action_no_ack(struct libwifi_action *action,
+                                 const unsigned char receiver[6],
+                                 const unsigned char transmitter[6],
+                                 const unsigned char address3[6],
+                                 uint8_t category);
 
 /**
  * Get the length of a given libwifi_action
@@ -63,10 +71,10 @@ size_t libwifi_get_action_length(struct libwifi_action *action);
 /**
  * Dump a given libwifi_action to a raw buffer
  *
- * @param  action A used libwifi_action struct
- * @param  buf    A buffer receiver
+ * @param  action  A used libwifi_action struct
+ * @param  buf     A buffer receiver
  * @param  buf_len The length of the given buf
- * @return        Bytes written to the buf
+ * @return         Bytes written to the buf, or negative error
  */
 size_t libwifi_dump_action(struct libwifi_action *action, unsigned char *buf, size_t buf_len);
 

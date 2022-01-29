@@ -12,7 +12,7 @@ const unsigned char bcast[] = BCAST_MAC;
 int test_assoc_req_gen_full() {
     struct libwifi_assoc_req assoc_req = {0};
 
-    int ret = libwifi_create_assoc_req(&assoc_req, bcast, to, "Some SSID", 11);
+    int ret = libwifi_create_assoc_req(&assoc_req, bcast, to, to, "Some SSID", 11);
     if (ret != 0) {
         fprintf(stderr, "Failed to create assoc_req: %s\n", strerror(ret));
         return ret;
@@ -42,7 +42,7 @@ int test_assoc_req_gen_full() {
 int test_assoc_req_add_tag() {
     struct libwifi_assoc_req assoc_req = {0};
 
-    int ret = libwifi_create_assoc_req(&assoc_req, bcast, to, "Some SSID", 11);
+    int ret = libwifi_create_assoc_req(&assoc_req, bcast, to, to, "Some SSID", 11);
     if (ret != 0) {
         fprintf(stderr, "Failed to create assoc_req: %s\n", strerror(ret));
         return ret;

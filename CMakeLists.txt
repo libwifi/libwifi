@@ -5,7 +5,7 @@ project(wifi DESCRIPTION "802.11 Parsing / Generation library" VERSION 0.1)
 execute_process(COMMAND git rev-parse --abbrev-ref HEAD OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE GITBRANCH)
 execute_process(COMMAND git log -1 --pretty=format:%h OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE GITHASH)
 execute_process(COMMAND date OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE BUILDTIME)
-set(LIBWIFI_VERSION "0.0.2")
+set(LIBWIFI_VERSION "0.0.3")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu17")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
@@ -24,17 +24,22 @@ message("-----------------------------------")
 message("802.11 Parsing / Generation Library")
 message("Version: ${LIBWIFI_VERSION}, Git: ${GITBRANCH} (${GITHASH}), Time: ${BUILDTIME}")
 message("Compiler: ${CMAKE_C_COMPILER_ID} ${CMAKE_C_COMPILER_VERSION}")
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    message("Building for Debug")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ggdb -O0")
+    add_compile_definitions(LIBWIFI_VERSION="dev-${GITBRANCH}-${GITHASH}")
+else()
+    message("Building for Release")
+    add_compile_definitions(LIBWIFI_VERSION="${LIBWIFI_VERSION}")
+endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+
 message(" ")
 
 file(GLOB_RECURSE libwifi_src
     "src/libwifi/*.h"
     "src/libwifi/*.c"
 )
-
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    message("Building as Debug")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ggdb -O0")
-endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 add_library(wifi SHARED ${libwifi_src})
 

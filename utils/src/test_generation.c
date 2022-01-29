@@ -186,7 +186,7 @@ void inject_probe_responses() {
             struct libwifi_probe_resp probe_resp;
             memset(&probe_resp, 0, sizeof(struct libwifi_probe_resp));
 
-            libwifi_create_probe_resp(&probe_resp, to, from, PROBE_RESP_SSID, CHANNEL);
+            libwifi_create_probe_resp(&probe_resp, to, from, from, PROBE_RESP_SSID, CHANNEL);
             libwifi_quick_add_tag(&probe_resp.tags, TAG_VENDOR_SPECIFIC, tag_data1, sizeof(tag_data1));
 
             unsigned char *buf = NULL;
@@ -258,7 +258,7 @@ void inject_deauths() {
             struct libwifi_deauth deauth;
             memset(&deauth, 0, sizeof(struct libwifi_deauth));
 
-            libwifi_create_deauth(&deauth, to, from, REASON_STA_LEAVING);
+            libwifi_create_deauth(&deauth, to, from, from, REASON_STA_LEAVING);
 
             unsigned char *buf = NULL;
             size_t buf_sz = libwifi_get_deauth_length(&deauth);
@@ -293,7 +293,7 @@ void inject_disassocs() {
             struct libwifi_disassoc disassoc;
             memset(&disassoc, 0, sizeof(struct libwifi_disassoc));
 
-            libwifi_create_disassoc(&disassoc, to, from, REASON_STA_LEAVING);
+            libwifi_create_disassoc(&disassoc, to, from, from, REASON_STA_LEAVING);
 
             unsigned char *buf = NULL;
             size_t buf_sz = libwifi_get_disassoc_length(&disassoc);
@@ -328,7 +328,7 @@ void inject_assoc_requests() {
             struct libwifi_assoc_req assoc_req;
             memset(&assoc_req, 0, sizeof(struct libwifi_assoc_req));
 
-            libwifi_create_assoc_req(&assoc_req, to, from, ASSOC_REQ_SSID, CHANNEL);
+            libwifi_create_assoc_req(&assoc_req, to, from, from, ASSOC_REQ_SSID, CHANNEL);
 
             unsigned char *buf = NULL;
             size_t buf_sz = libwifi_get_assoc_req_length(&assoc_req);
@@ -363,7 +363,7 @@ void inject_assoc_responses() {
             struct libwifi_assoc_resp assoc_resp;
             memset(&assoc_resp, 0, sizeof(struct libwifi_assoc_req));
 
-            libwifi_create_assoc_resp(&assoc_resp, to, from, CHANNEL);
+            libwifi_create_assoc_resp(&assoc_resp, to, from, from, CHANNEL);
 
             unsigned char *buf = NULL;
             size_t buf_sz = libwifi_get_assoc_resp_length(&assoc_resp);
@@ -398,7 +398,7 @@ void inject_reassoc_requests() {
             struct libwifi_reassoc_req reassoc_req;
             memset(&reassoc_req, 0, sizeof(struct libwifi_assoc_req));
 
-            libwifi_create_reassoc_req(&reassoc_req, to, from, reassoc_mac, REASSOC_REQ_SSID, CHANNEL);
+            libwifi_create_reassoc_req(&reassoc_req, to, from, from, reassoc_mac, REASSOC_REQ_SSID, CHANNEL);
 
             unsigned char *buf = NULL;
             size_t buf_sz = libwifi_get_reassoc_req_length(&reassoc_req);
@@ -434,7 +434,7 @@ void inject_reassoc_responses() {
             struct libwifi_reassoc_resp reassoc_resp;
             memset(&reassoc_resp, 0, sizeof(struct libwifi_assoc_req));
 
-            libwifi_create_reassoc_resp(&reassoc_resp, to, from, CHANNEL);
+            libwifi_create_reassoc_resp(&reassoc_resp, to, from, from, CHANNEL);
 
             unsigned char *buf = NULL;
             size_t buf_sz = libwifi_get_reassoc_resp_length(&reassoc_resp);
@@ -469,7 +469,7 @@ void inject_auths() {
             struct libwifi_auth auth;
             memset(&auth, 0, sizeof(struct libwifi_deauth));
 
-            libwifi_create_auth(&auth, to, from, AUTH_OPEN, 0, STATUS_SUCCESS);
+            libwifi_create_auth(&auth, to, from, from, AUTH_OPEN, 0, STATUS_SUCCESS);
 
             unsigned char *buf = NULL;
             size_t buf_sz = libwifi_get_auth_length(&auth);
@@ -487,7 +487,7 @@ void inject_auths() {
 
             memset(&auth, 0, sizeof(struct libwifi_deauth));
 
-            libwifi_create_auth(&auth, from, to, AUTH_OPEN, 1, STATUS_SUCCESS);
+            libwifi_create_auth(&auth, from, to, to, AUTH_OPEN, 1, STATUS_SUCCESS);
 
             buf = NULL;
             buf_sz = libwifi_get_auth_length(&auth);
@@ -527,7 +527,7 @@ void inject_timing_ads() {
             memcpy(ad_fields.time_value,
                   "\xAA\xAA\xAA\xAA\xAA\xAA\xAA\xAA\xAA\xAA", 10);
 
-            libwifi_create_timing_advert(&time_ad, to, from, &ad_fields, "GB", -56, -56, -30, -20);
+            libwifi_create_timing_advert(&time_ad, to, from, from, &ad_fields, "GB", -56, -56, -30, -20);
 
             unsigned char *buf = NULL;
             size_t buf_len = libwifi_get_timing_advert_length(&time_ad);
@@ -562,7 +562,7 @@ void inject_action_noacks() {
             struct libwifi_action action;
             memset(&action, 0, sizeof(struct libwifi_action));
 
-            libwifi_create_action_no_ack(&action, to, from, ACTION_FAST_BSS_TRANSITION);
+            libwifi_create_action_no_ack(&action, to, from, from, ACTION_FAST_BSS_TRANSITION);
 
             unsigned char *action_buf = malloc(256);
             memset(action_buf, 0, 256);
@@ -637,7 +637,7 @@ void inject_actions() {
             struct libwifi_action action;
             memset(&action, 0, sizeof(struct libwifi_action));
 
-            libwifi_create_action(&action, to, from, ACTION_FAST_BSS_TRANSITION);
+            libwifi_create_action(&action, to, from, from, ACTION_FAST_BSS_TRANSITION);
 
             unsigned char *action_buf = malloc(256);
             memset(action_buf, 0, 256);

@@ -19,7 +19,7 @@ void create_write_beacon() {
     libwifi_random_mac(transmitter, NULL);
     unsigned char receiver[6] = "\xFF\xFF\xFF\xFF\xFF\xFF";
 
-    libwifi_create_beacon(&beacon, receiver, transmitter, "libwifi-beacon", 6);
+    libwifi_create_beacon(&beacon, receiver, transmitter, transmitter, "libwifi-beacon", 6);
     libwifi_quick_add_tag(&beacon.tags, TAG_VENDOR_SPECIFIC,
                          (unsigned char *) "libwifi-tag", strlen("libwifi-tag"));
 

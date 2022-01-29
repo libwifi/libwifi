@@ -18,7 +18,18 @@
 
 #include "../../core/frame/management/atim.h"
 
-int libwifi_create_atim(struct libwifi_atim *atim, const unsigned char transmitter[6],
-                        const unsigned char receiver[6], const unsigned char bssid[6]);
+/**
+ * Generate a populated ATIM frame.
+ *
+ * @param atim        A new libwifi_atim struct
+ * @param transmitter The transmitter address, aka address 1
+ * @param receiver    The receiver address, aka address 2
+ * @param address3    The address 3 frame value, typically the BSSID
+ * @return            Zero on success, or negative error
+*/
+int libwifi_create_atim(struct libwifi_atim *atim,
+                        const unsigned char transmitter[6],
+                        const unsigned char receiver[6],
+                        const unsigned char address3[6]);
 
 #endif /* LIBWIFI_GEN_ATIM_H */

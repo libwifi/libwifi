@@ -24,7 +24,7 @@
  * Calculate the length of a given libwifi_probe_req
  *
  * @param probe_req A libwifi_probe_req
- * @return The length of the given probe_req
+ * @return          The length of the given probe_req, or negative error
  */
 size_t libwifi_get_probe_req_length(struct libwifi_probe_req *probe_req);
 
@@ -34,23 +34,28 @@ size_t libwifi_get_probe_req_length(struct libwifi_probe_req *probe_req);
  * A generated libwifi probe_req can be "dumped" into a buffer for packet injection
  * via the libwifi_dump_probe_req.
  *
- * @param probe_req A libwifi_probe_req
- * @param receiver The receiver MAC address, aka address 1
+ * @param probe_req   A libwifi_probe_req
+ * @param receiver    The receiver MAC address, aka address 1
  * @param transmitter The source MAC address, aka address 2
- * @param reason_code The probe_req reason code
- *
+ * @param address3    The address 3 frame field value, typically the BSSID
+ * @param ssid        The probe request SSID
+ * @param channel     The probe request channel
+ * @return            Zero on success, or negative error
  */
-int libwifi_create_probe_req(struct libwifi_probe_req *probe_req, const unsigned char receiver[6],
-                              const unsigned char transmitter[6], const unsigned char bssid[6],
-                              const char *ssid, uint8_t channel);
+int libwifi_create_probe_req(struct libwifi_probe_req *probe_req,
+                             const unsigned char receiver[6],
+                             const unsigned char transmitter[6],
+                             const unsigned char address3[6],
+                             const char *ssid,
+                             uint8_t channel);
 
 /**
  * Dump a libwifi_probe_req into a raw format for packet injection.
  *
  * @param probe_req A libwifi_probe_req
- * @param buf The output buffer for the frame data
- * @param buf_len The length of the output buffer
- * @return The length of the dumped probe_req
+ * @param buf       The output buffer for the frame data
+ * @param buf_len   The length of the output buffer
+ * @return          The length of the dumped probe_req, or negative error
  */
 size_t libwifi_dump_probe_req(struct libwifi_probe_req *probe_req, unsigned char *buf, size_t buf_len);
 
