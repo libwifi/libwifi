@@ -36,7 +36,7 @@ libwifi version: dev-fixup-7909700
 ```
 
 ## Examples
-Some examples are available in the `examples/` directory, which show the general flow of how libwifi is used to generate and parse different types of 802.11 frame.
+Some examples are available in the [examples](https://github.com/libwifi/libwifi/tree/main/examples) directory, which show the general flow of how libwifi is used to generate and parse different types of 802.11 frame.
 
 ## Running Tests
 Using ctest, you can run the tests for the parse and generation functions of libwifi.
