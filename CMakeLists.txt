@@ -54,4 +54,3 @@ install(DIRECTORY src/libwifi/gen/ DESTINATION /usr/include/libwifi/gen FILES_MA
 install(TARGETS wifi LIBRARY DESTINATION /usr/lib PUBLIC_HEADER DESTINATION /usr/include)
 
 add_custom_target(uninstall COMMAND rm -rf /usr/include/libwifi; rm -rf /usr/include/libwifi.h)
-add_custom_target(libinstall COMMAND cp libwifi.so* /usr/lib)
