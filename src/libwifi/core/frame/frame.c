@@ -37,31 +37,23 @@ int libwifi_get_wifi_frame(struct libwifi_frame *fi, const unsigned char *frame,
     union libwifi_frame_header fh = {0};
     size_t header_len = 0;
     size_t frame_data_len = frame_len;
-    unsigned char *frame_data = malloc(frame_data_len);
-    memcpy(frame_data, (unsigned char *) frame, frame_data_len);
+    const unsigned char *frame_data = frame;
 
     if (radiotap) {
         struct libwifi_radiotap_info rtap_info = {0};
-        int ret = libwifi_parse_radiotap_info(&rtap_info, frame_data, frame_len);
+        int ret = libwifi_parse_radiotap_info(&rtap_info, frame, frame_len);
         if (ret != 0) {
             return ret;
         }
 
         // Skip forward by the length of the radiotap header
         frame_data_len -= rtap_info.length;
-        unsigned char *new_data = malloc(frame_data_len);
-        memcpy(new_data, frame_data + rtap_info.length, frame_data_len);
-        free(frame_data);
-        frame_data = new_data;
+        frame_data += rtap_info.length;
 
         // Remove the FCS from the end of the frame data, if present
         if (rtap_info.flags & IEEE80211_RADIOTAP_F_FCS) {
             fi->flags |= LIBWIFI_FLAGS_FCS_PRESENT;
             frame_data_len -= sizeof(uint32_t); // FCS is 4 bytes wide
-            frame_data = realloc(frame_data, frame_data_len);
-            if (frame_data == NULL) {
-                return -ENOMEM;
-            }
         }
     }
 
@@ -88,7 +80,6 @@ int libwifi_get_wifi_frame(struct libwifi_frame *fi, const unsigned char *frame,
             }
 
             if (frame_data_len < header_len) {
-                free(frame_data);
                 return -EINVAL;
             }
 
@@ -105,14 +96,12 @@ int libwifi_get_wifi_frame(struct libwifi_frame *fi, const unsigned char *frame,
                 fi->flags |= LIBWIFI_FLAGS_IS_ORDERED;
                 header_len = sizeof(struct libwifi_mgmt_ordered_frame_header);
                 if (frame_data_len < header_len) {
-                    free(frame_data);
                     return -EINVAL;
                 }
                 memcpy(&fh.mgmt_ordered, frame_data, header_len);
             } else {
                 header_len = sizeof(struct libwifi_mgmt_unordered_frame_header);
                 if (frame_data_len < header_len) {
-                    free(frame_data);
                     return -EINVAL;
                 }
                 memcpy(&fh.mgmt_unordered, frame_data, header_len);
@@ -121,13 +110,11 @@ int libwifi_get_wifi_frame(struct libwifi_frame *fi, const unsigned char *frame,
         case TYPE_CONTROL:
             header_len = sizeof(struct libwifi_ctrl_frame_header);
             if (frame_data_len < header_len) {
-                free(frame_data);
                 return -EINVAL;
             }
             memcpy(&fh.ctrl, frame_data, sizeof(struct libwifi_ctrl_frame_header));
             break;
         default:
-            free(frame_data);
             return -EINVAL;
     }
 
@@ -137,9 +124,11 @@ int libwifi_get_wifi_frame(struct libwifi_frame *fi, const unsigned char *frame,
     memcpy(&fi->frame_control, frame_control, sizeof(struct libwifi_frame_ctrl));
 
     fi->body = malloc(fi->len - fi->header_len);
-    memcpy(fi->body, frame_data + header_len, (fi->len - fi->header_len));
+    if (fi->body == NULL) {
+        return -ENOMEM;
+    }
 
-    free(frame_data);
+    memcpy(fi->body, frame_data + header_len, (fi->len - fi->header_len));
 
     return 0;
 }
