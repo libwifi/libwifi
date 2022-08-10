@@ -69,7 +69,6 @@ int libwifi_get_rsn_info(struct libwifi_rsn_info *info, const unsigned char *tag
         }
         cur_cipher_suite = (struct wifi_cipher_suite *) data;
         memcpy(&info->pairwise_cipher_suites[i], cur_cipher_suite, sizeof(struct libwifi_cipher_suite));
-        info->pairwise_cipher_suites[i].suite_type = info->pairwise_cipher_suites[i].suite_type;
         data += sizeof(struct libwifi_cipher_suite);
     }
 
@@ -94,7 +93,6 @@ int libwifi_get_rsn_info(struct libwifi_rsn_info *info, const unsigned char *tag
         }
         cur_cipher_suite = (struct wifi_cipher_suite *) data;
         memcpy(&info->auth_key_mgmt_suites[i], cur_cipher_suite, sizeof(struct libwifi_cipher_suite));
-        info->auth_key_mgmt_suites[i].suite_type = info->auth_key_mgmt_suites[i].suite_type;
         data += sizeof(struct libwifi_cipher_suite);
     }
 
@@ -352,7 +350,6 @@ int libwifi_get_wpa_info(struct libwifi_wpa_info *info, const unsigned char *tag
         }
         cur_cipher_suite = (struct wifi_cipher_suite *) data;
         memcpy(&info->unicast_cipher_suites[i], cur_cipher_suite, sizeof(struct libwifi_cipher_suite));
-        info->unicast_cipher_suites[i].suite_type = info->unicast_cipher_suites[i].suite_type;
         data += sizeof(struct libwifi_cipher_suite);
     }
 
@@ -377,7 +374,6 @@ int libwifi_get_wpa_info(struct libwifi_wpa_info *info, const unsigned char *tag
         }
         cur_cipher_suite = (struct wifi_cipher_suite *) data;
         memcpy(&info->auth_key_mgmt_suites[i], cur_cipher_suite, sizeof(struct libwifi_cipher_suite));
-        info->auth_key_mgmt_suites[i].suite_type = info->auth_key_mgmt_suites[i].suite_type;
         data += sizeof(struct libwifi_cipher_suite);
     }
 
