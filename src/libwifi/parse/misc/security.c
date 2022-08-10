@@ -62,12 +62,12 @@ int libwifi_get_rsn_info(struct libwifi_rsn_info *info, const unsigned char *tag
     info->num_pairwise_cipher_suites = suite_count;
 
     // Iterate through the found Pairwise Ciphers, adding them each time
-    struct wifi_cipher_suite *cur_cipher_suite = NULL;
+    struct libwifi_cipher_suite *cur_cipher_suite = NULL;
     for (int i = 0; i < suite_count; ++i) {
         if (data > tag_end) {
             return -EINVAL;
         }
-        cur_cipher_suite = (struct wifi_cipher_suite *) data;
+        cur_cipher_suite = (struct libwifi_cipher_suite *) data;
         memcpy(&info->pairwise_cipher_suites[i], cur_cipher_suite, sizeof(struct libwifi_cipher_suite));
         data += sizeof(struct libwifi_cipher_suite);
     }
@@ -91,7 +91,7 @@ int libwifi_get_rsn_info(struct libwifi_rsn_info *info, const unsigned char *tag
         if (data > tag_end) {
             return -EINVAL;
         }
-        cur_cipher_suite = (struct wifi_cipher_suite *) data;
+        cur_cipher_suite = (struct libwifi_cipher_suite *) data;
         memcpy(&info->auth_key_mgmt_suites[i], cur_cipher_suite, sizeof(struct libwifi_cipher_suite));
         data += sizeof(struct libwifi_cipher_suite);
     }
@@ -343,12 +343,12 @@ int libwifi_get_wpa_info(struct libwifi_wpa_info *info, const unsigned char *tag
     info->num_unicast_cipher_suites = suite_count;
 
     // Iterate through the found Unicast Ciphers, adding them each time
-    struct wifi_cipher_suite *cur_cipher_suite = NULL;
+    struct libwifi_cipher_suite *cur_cipher_suite = NULL;
     for (int i = 0; i < suite_count; ++i) {
         if (data > tag_end) {
             return -EINVAL;
         }
-        cur_cipher_suite = (struct wifi_cipher_suite *) data;
+        cur_cipher_suite = (struct libwifi_cipher_suite *) data;
         memcpy(&info->unicast_cipher_suites[i], cur_cipher_suite, sizeof(struct libwifi_cipher_suite));
         data += sizeof(struct libwifi_cipher_suite);
     }
@@ -372,7 +372,7 @@ int libwifi_get_wpa_info(struct libwifi_wpa_info *info, const unsigned char *tag
         if (data > tag_end) {
             return -EINVAL;
         }
-        cur_cipher_suite = (struct wifi_cipher_suite *) data;
+        cur_cipher_suite = (struct libwifi_cipher_suite *) data;
         memcpy(&info->auth_key_mgmt_suites[i], cur_cipher_suite, sizeof(struct libwifi_cipher_suite));
         data += sizeof(struct libwifi_cipher_suite);
     }
