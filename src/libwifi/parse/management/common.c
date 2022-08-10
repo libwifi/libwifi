@@ -68,7 +68,9 @@ void libwifi_handle_ssid_tag(void *target, int target_type, const char *tag_data
 int libwifi_bss_handle_rsn_tag(struct libwifi_bss *bss, const unsigned char *rsn_data, int rsn_len) {
     struct libwifi_rsn_info rsn_info = {0};
 
-    bss->encryption_info &= ~(unsigned int) WEP;
+    if (bss->encryption_info & WEP) {
+        bss->encryption_info &= ~(unsigned int) WEP;
+    }
 
     int min_len = sizeof(rsn_info.rsn_version) + sizeof(struct libwifi_cipher_suite);
     if (rsn_len < min_len) {
@@ -105,7 +107,9 @@ int libwifi_bss_handle_msft_tag(struct libwifi_bss *bss, const unsigned char *ms
 
     switch (vendor_header->type) {
         case MICROSOFT_OUI_TYPE_WPA:
-            bss->encryption_info &= ~(unsigned int) WEP;
+            if (bss->encryption_info & WEP) {
+                bss->encryption_info &= ~(unsigned int) WEP;
+            }
             bss->encryption_info |= WPA;
 
             // Skip 4 bytes for the OUI (3) and Vendor Tag Type (1)
