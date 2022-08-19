@@ -370,7 +370,7 @@ void parse_data_eapol(struct libwifi_frame frame, unsigned char *args, const str
             printf("EAPOL: Descriptor: %d\n", data.descriptor);
             printf("EAPOL: Key Info: Information: 0x%04x\n", data.key_info.information);
             printf("EAPOL: Key Info: Key Length: %d\n", data.key_info.key_length);
-            printf("EAPOL: Key Info: Replay Counter: %lu\n", data.key_info.replay_counter);
+            printf("EAPOL: Key Info: Replay Counter: %llu\n", data.key_info.replay_counter);
             printf("EAPOL: Key Info: Nonce: ");
             for (size_t i = 0; i < sizeof(data.key_info.nonce); ++i) printf("%02x ", data.key_info.nonce[i]);
                 printf("\n");
