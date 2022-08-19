@@ -2,6 +2,7 @@
 *.a
 *.o
 *.so*
+*.dylib
 
 # Build
 CMakeLists.txt.user
@@ -20,4 +21,9 @@ CMakeUserPresets.json
 
 # Output
 build/
-tests/build/
+test/build/
+test/*_tests
+utils/test_*
+
+# Temporary Patches
+*.patch
