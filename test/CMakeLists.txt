@@ -7,7 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ggdb -O0")
 
-#link_directories("../build/")
+link_directories("../build/")
+
 link_directories(AFTER "/usr/local/lib")
 include_directories(AFTER "/usr/local/include")
 
