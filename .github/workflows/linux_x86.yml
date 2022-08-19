@@ -1,4 +1,4 @@
-name: libwifi (64-Bit)
+name: libwifi (Linux) (64-Bit)
 
 on: [push]
 
