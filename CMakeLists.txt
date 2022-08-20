@@ -55,4 +55,4 @@ install(DIRECTORY src/libwifi/parse/ DESTINATION /usr/local/include/libwifi/pars
 install(DIRECTORY src/libwifi/gen/ DESTINATION /usr/local/include/libwifi/gen FILES_MATCHING PATTERN "*.h")
 install(TARGETS wifi LIBRARY DESTINATION /usr/local/lib PUBLIC_HEADER DESTINATION /usr/local/include)
 
-add_custom_target(uninstall COMMAND rm -rf /usr/local/include/libwifi; rm -rf /usr/local/include/libwifi.h)
+add_custom_target(uninstall COMMAND rm -rf /usr/local/include/libwifi; rm -rf /usr/local/include/libwifi.h; rm -rf /usr/local/lib/libwifi*)
