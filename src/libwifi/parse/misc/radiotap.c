@@ -17,14 +17,18 @@
 #include "../../core/radiotap/radiotap_iter.h"
 
 #include <errno.h>
-#include <endian.h>
 #include <stdint.h>
+
+#if !(__APPLE__)
+#include <endian.h>
+#endif
 
 /**
  * The libwifi radiotap parser uses the usual ieee80211_radiotap_iterator to parse incoming
  * radiotap headers into a consumable libwifi_radiotap_info struct.
  */
-int libwifi_parse_radiotap_info(struct libwifi_radiotap_info *info, const unsigned char *frame, size_t frame_len) {
+int libwifi_parse_radiotap_info(struct libwifi_radiotap_info *info, const unsigned char *frame,
+                                size_t frame_len) {
     memset(info, 0, sizeof(struct libwifi_radiotap_info));
 
     if (frame_len < sizeof(struct ieee80211_radiotap_header)) {
