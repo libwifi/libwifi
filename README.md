@@ -3,7 +3,7 @@
 
 | Build Status                                                                          | OS    |
 |---------------------------------------------------------------------------------------|-------|
-|![X86_64](https://github.com/libwifi/libwifi/actions/workflows/linux_x86.yml/badge.svg)| Linux |
+|![linux](https://github.com/libwifi/libwifi/actions/workflows/linux_x86.yml/badge.svg) | Linux |
 |![macOS](https://github.com/libwifi/libwifi/actions/workflows/macos_x86.yml/badge.svg) | macOS |
 
 ## What is this?
