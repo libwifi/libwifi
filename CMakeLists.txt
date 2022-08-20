@@ -50,11 +50,6 @@ set_target_properties(wifi PROPERTIES VERSION ${LIBWIFI_VERSION})
 set_target_properties(wifi PROPERTIES SOVERSION 0)
 set_target_properties(wifi PROPERTIES PUBLIC_HEADER src/libwifi.h)
 
-#install(DIRECTORY src/libwifi/core/ DESTINATION /usr/include/libwifi/core FILES_MATCHING PATTERN "*.h")
-#install(DIRECTORY src/libwifi/parse/ DESTINATION /usr/include/libwifi/parse FILES_MATCHING PATTERN "*.h")
-#install(DIRECTORY src/libwifi/gen/ DESTINATION /usr/include/libwifi/gen FILES_MATCHING PATTERN "*.h")
-#install(TARGETS wifi LIBRARY DESTINATION /usr/lib PUBLIC_HEADER DESTINATION /usr/include)
-
 install(DIRECTORY src/libwifi/core/ DESTINATION /usr/local/include/libwifi/core FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY src/libwifi/parse/ DESTINATION /usr/local/include/libwifi/parse FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY src/libwifi/gen/ DESTINATION /usr/local/include/libwifi/gen FILES_MATCHING PATTERN "*.h")
