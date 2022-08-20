@@ -44,11 +44,16 @@ file(GLOB_RECURSE libwifi_src
 )
 
 add_library(wifi SHARED ${libwifi_src})
-
 set_target_properties(wifi PROPERTIES LINKER_LANGUAGE C)
 set_target_properties(wifi PROPERTIES VERSION ${LIBWIFI_VERSION})
 set_target_properties(wifi PROPERTIES SOVERSION 0)
 set_target_properties(wifi PROPERTIES PUBLIC_HEADER src/libwifi.h)
+
+add_library(wifi_static STATIC ${libwifi_src})
+set_target_properties(wifi_static PROPERTIES LINKER_LANGUAGE C)
+set_target_properties(wifi_static PROPERTIES VERSION ${LIBWIFI_VERSION})
+set_target_properties(wifi_static PROPERTIES PUBLIC_HEADER src/libwifi.h)
+set_target_properties(wifi_static PROPERTIES OUTPUT_NAME wifi)
 
 install(DIRECTORY src/libwifi/core/ DESTINATION /usr/local/include/libwifi/core FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY src/libwifi/parse/ DESTINATION /usr/local/include/libwifi/parse FILES_MATCHING PATTERN "*.h")
