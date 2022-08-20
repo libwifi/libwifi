@@ -1,14 +1,15 @@
 # libwifi
 802.11 Parsing / Generation library
 
-| Build Status                                                                       | OS    | Architecture |
-| ---------------------------------------------------------------------------------- | ------| ------------ |
-|![X86_64](https://github.com/libwifi/libwifi/actions/workflows/x86_64.yml/badge.svg) | Linux | x86_64       |
+| Build Status                                                                          | OS    |
+|---------------------------------------------------------------------------------------|-------|
+|![X86_64](https://github.com/libwifi/libwifi/actions/workflows/linux_x86.yml/badge.svg)| Linux |
+|![macOS](https://github.com/libwifi/libwifi/actions/workflows/macos_x86.yml/badge.svg) | macOS |
 
 ## What is this?
-libwifi is a C library with a permissive license for generating and parsing a wide variety of 802.11 wireless frames (see the [Feature Checklist](https://libwifi.so/features)) on Linux with a few lines of straight forward code (see the [Examples section](#examples) below).
+libwifi is a C library with a permissive license for generating and parsing a wide variety of 802.11 wireless frames (see the [Feature Checklist](https://libwifi.so/features)) on Linux and macOS with a few lines of straight forward code (see the [Examples section](#examples) below).
 
-It is written with a simple-to-use approach while also exposing features that allow more advanced use, with clean and readable code being a priority. Other goals of the library include cross-architecture support, clean compilation without warnings and strict error checking.
+libwifi has been tested across Linux and macOS, on x86, MIPS and ARM, and is written with a simple-to-use approach while also exposing features that allow more advanced use, with clean and readable code being a priority. Other goals of the library include cross-architecture support, clean compilation without warnings and strict error checking.
 
 The library is fully documented with code comments in both the headers files and the code files.
 
