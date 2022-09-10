@@ -61,6 +61,7 @@ int libwifi_parse_beacon(struct libwifi_bss *bss, struct libwifi_frame *frame) {
     }
 
     // At least one Tagged Parameter must be present
+    // + 2 represents two additional bytes: Tag number and a single byte value
     if (frame->len < (frame->header_len + sizeof(struct libwifi_beacon_fixed_parameters) + 2)) {
         return -EINVAL;
     }
