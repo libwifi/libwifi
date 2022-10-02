@@ -36,6 +36,11 @@ size_t libwifi_create_radiotap(struct libwifi_radiotap_info *info, char *radiota
     uint32_t presence_bit = rtap_hdr.it_present;
     for (int field = 0; field < radiotap_ns.n_bits; field++) {
         if (presence_bit & 1) {
+            uint8_t padding = offset % radiotap_ns.align_size[field].align;
+            if (padding > 0) {
+                memset(rtap_data + offset, 0, padding);
+                offset += padding;
+            }
             switch (field) {
                 case IEEE80211_RADIOTAP_CHANNEL:
                     memcpy(rtap_data + offset, &info->channel.freq, sizeof(info->channel.freq));
