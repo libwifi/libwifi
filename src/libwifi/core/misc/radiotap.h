@@ -21,13 +21,22 @@
 #define LIBWIFI_MAX_RADIOTAP_LEN 128
 #define LIBWIFI_MAX_RADIOTAP_ANTENNAS 16
 
+#define LIBWIFI_RADIOTAP_BAND_2GHZ (1 << 0)
+#define LIBWIFI_RADIOTAP_BAND_5GHZ (1 << 1)
+#define LIBWIFI_RADIOTAP_BAND_6GHZ (1 << 2)
+#define LIBWIFI_RADIOTAP_BAND_900MHZ (1 << 3)
+
 /**
  * A channel field in radiotap consists of a 2-byte wide flags
- * sub-field and a 2-byte wide frequency field
+ * sub-field and a 2-byte wide frequency field.
+ *
+ * libwifi will also calculate the band and center channel.
  */
 struct libwifi_radiotap_channel {
     uint16_t flags;
     uint16_t freq;
+    uint8_t center;
+    uint8_t band;
 } __attribute__((packed));
 
 /**

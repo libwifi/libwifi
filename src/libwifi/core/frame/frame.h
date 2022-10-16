@@ -17,6 +17,7 @@
 #define LIBWIFI_CORE_FRAME_H
 
 #include "../../core/misc/byteswap.h"
+#include "../../core/misc/radiotap.h"
 
 #include <stdint.h>
 #include <sys/types.h>
@@ -25,6 +26,7 @@
 #define LIBWIFI_FLAGS_FCS_PRESENT (1 << 0)
 #define LIBWIFI_FLAGS_IS_QOS (1 << 1)
 #define LIBWIFI_FLAGS_IS_ORDERED (1 << 2)
+#define LIBWIFI_FLAGS_RADIOTAP_PRESENT (1 << 3)
 
 /* Defined frame types and sub-types */
 enum libwifi_frame_type {
@@ -306,6 +308,7 @@ union libwifi_mgmt_frame_header {
  * frame in libwifi.
  */
 struct libwifi_frame {
+    struct libwifi_radiotap_info *radiotap_info;
     uint16_t flags;
     struct libwifi_frame_ctrl frame_control;
     size_t len;

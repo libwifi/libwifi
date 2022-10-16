@@ -142,6 +142,7 @@ int libwifi_bss_handle_msft_tag(struct libwifi_bss *bss, const unsigned char *ms
  */
 int libwifi_bss_tag_parser(struct libwifi_bss *bss, struct libwifi_tag_iterator *it) {
     struct libwifi_tag_vendor_header *vendor_header = NULL;
+    struct libwifi_tag_extension_header *extension_header = NULL;
 
     do {
         switch (it->tag_header->tag_num) {
@@ -166,6 +167,16 @@ int libwifi_bss_tag_parser(struct libwifi_bss *bss, struct libwifi_tag_iterator 
                         return -EINVAL;
                     }
                 }
+                break;
+            case TAG_ELEMENT_EXTENSION:
+                extension_header = (struct libwifi_tag_extension_header *) it->tag_data;
+
+                switch (extension_header->tag_num) {
+                    default:
+                        /* Not Implemented */
+                        break;
+                }
+
                 break;
         }
     } while (libwifi_tag_iterator_next(it) != -1);

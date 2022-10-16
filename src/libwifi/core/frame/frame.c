@@ -32,8 +32,7 @@
  *  - QoS Data Frames
  *  - Control Frames
  */
-int libwifi_get_wifi_frame(struct libwifi_frame *fi, const unsigned char *frame, size_t frame_len,
-                           int radiotap) {
+int libwifi_get_wifi_frame(struct libwifi_frame *fi, const unsigned char *frame, size_t frame_len, int radiotap) {
     union libwifi_frame_header fh = {0};
     size_t header_len = 0;
     size_t frame_data_len = frame_len;
@@ -55,6 +54,10 @@ int libwifi_get_wifi_frame(struct libwifi_frame *fi, const unsigned char *frame,
             fi->flags |= LIBWIFI_FLAGS_FCS_PRESENT;
             frame_data_len -= sizeof(uint32_t); // FCS is 4 bytes wide
         }
+
+        fi->flags |= LIBWIFI_FLAGS_RADIOTAP_PRESENT;
+        fi->radiotap_info = malloc(sizeof(struct libwifi_radiotap_info));
+        memcpy(fi->radiotap_info, &rtap_info, sizeof(struct libwifi_radiotap_info));
     }
 
     struct libwifi_frame_ctrl *frame_control = (struct libwifi_frame_ctrl *) frame_data;
@@ -134,5 +137,6 @@ int libwifi_get_wifi_frame(struct libwifi_frame *fi, const unsigned char *frame,
 }
 
 void libwifi_free_wifi_frame(struct libwifi_frame *fi) {
+    free(fi->radiotap_info);
     free(fi->body);
 }

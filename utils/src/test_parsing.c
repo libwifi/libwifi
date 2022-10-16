@@ -132,26 +132,36 @@ void print_tag_info(unsigned char *data, size_t data_len) {
     } while (libwifi_tag_iterator_next(&it) != -1);
 }
 
-void parse_radiotap(const unsigned char *packet, size_t packet_len) {
-    struct libwifi_radiotap_info rtap_info;
-    libwifi_parse_radiotap_info(&rtap_info, packet, packet_len);
+void parse_radiotap(const struct libwifi_frame *frame) {
+    const struct libwifi_radiotap_info *rtap_info = frame->radiotap_info;
 
     printf("=== Radiotap Parsing ===\n");
-    printf("Radiotap Channel: %d\n", rtap_info.channel.freq);
-    printf("Radiotap Channel Flags: 0x%04x\n", rtap_info.channel.flags);
-    printf("Radiotap Rate: %.2f Mb/s\n", rtap_info.rate);
-    printf("Radiotap Rate Raw: 0x%02x\n", rtap_info.rate_raw);
-    printf("Radiotap Signal: %d dBm\n", rtap_info.signal);
-    for (int i = 0; i < rtap_info.antenna_count; i++) {
-        printf("Radiotap Antenna %d: %d dBm\n", rtap_info.antennas[i].antenna_number, rtap_info.antennas[i].signal);
+    printf("Radiotap Channel Freq: %d MHz\n", rtap_info->channel.freq);
+    printf("Radiotap Freq Band: ");
+    if (rtap_info->channel.band & LIBWIFI_RADIOTAP_BAND_2GHZ) {
+        printf("2.4 GHz\n");
+    } else if (rtap_info->channel.band & LIBWIFI_RADIOTAP_BAND_5GHZ) {
+        printf("5 GHz\n");
+    } else if (rtap_info->channel.band & LIBWIFI_RADIOTAP_BAND_6GHZ) {
+        printf("6 GHz\n");
+    } else {
+        printf("Unknown Band\n");
     }
-    printf("Radiotap Flags: 0x%04x\n", rtap_info.flags);
-    printf("Radiotap Extended Flags: 0x%08x\n", rtap_info.extended_flags);
-    printf("Radiotap RX Flags: 0x%04x\n", rtap_info.rx_flags);
-    printf("Radiotap TX Flags: 0x%04x\n", rtap_info.tx_flags);
-    printf("Radiotap TX Power: %d\n", rtap_info.tx_power);
-    printf("Radiotap RTS Retries: %d\n", rtap_info.rts_retries);
-    printf("Radiotap Data Retries: %d\n", rtap_info.data_retries);
+    printf("Radiotap Channel: %d\n", rtap_info->channel.center);
+    printf("Radiotap Channel Flags: 0x%04x\n", rtap_info->channel.flags);
+    printf("Radiotap Rate: %.2f Mb/s\n", rtap_info->rate);
+    printf("Radiotap Rate Raw: 0x%02x\n", rtap_info->rate_raw);
+    printf("Radiotap Signal: %d dBm\n", rtap_info->signal);
+    for (int i = 0; i < rtap_info->antenna_count; i++) {
+        printf("Radiotap Antenna %d: %d dBm\n", rtap_info->antennas[i].antenna_number, rtap_info->antennas[i].signal);
+    }
+    printf("Radiotap Flags: 0x%04x\n", rtap_info->flags);
+    printf("Radiotap Extended Flags: 0x%08x\n", rtap_info->extended_flags);
+    printf("Radiotap RX Flags: 0x%04x\n", rtap_info->rx_flags);
+    printf("Radiotap TX Flags: 0x%04x\n", rtap_info->tx_flags);
+    printf("Radiotap TX Power: %d\n", rtap_info->tx_power);
+    printf("Radiotap RTS Retries: %d\n", rtap_info->rts_retries);
+    printf("Radiotap Data Retries: %d\n", rtap_info->data_retries);
     printf("=== Radiotap End ===\n");
 }
 
@@ -163,10 +173,6 @@ void parse_beacon(struct libwifi_frame frame, unsigned char *args, const struct 
             printf("Failed to parse beacon: %d\n", ret);
             pcap_dump(args, header, packet);
             return;
-        }
-
-        if (got_radiotap && parse_radiotap_header) {
-            parse_radiotap(packet, header->caplen);
         }
 
         print_bss_info(&bss);
@@ -183,10 +189,6 @@ void parse_probe_request(struct libwifi_frame frame, unsigned char *args, const 
             return;
         }
 
-        if (got_radiotap && parse_radiotap_header) {
-            parse_radiotap(packet, header->caplen);
-        }
-
         print_sta_info(&sta);
     }
 }
@@ -198,10 +200,6 @@ void parse_probe_response(struct libwifi_frame frame, unsigned char *args, const
             printf("Failed to parse probe response: %d\n", ret);
             pcap_dump(args, header, packet);
             return;
-        }
-
-        if (got_radiotap && parse_radiotap_header) {
-            parse_radiotap(packet, header->caplen);
         }
 
         print_bss_info(&bss);
@@ -216,10 +214,6 @@ void parse_deauth(struct libwifi_frame frame, unsigned char *args, const struct 
             printf("Failed to parse deauthentication: %d\n", ret);
             pcap_dump(args, header, packet);
             return;
-        }
-
-        if (got_radiotap && parse_radiotap_header) {
-            parse_radiotap(packet, header->caplen);
         }
 
         printf("=== Deauthentication Frame ===\n");
@@ -257,10 +251,6 @@ void parse_disassoc(struct libwifi_frame frame, unsigned char *args, const struc
             return;
         }
 
-        if (got_radiotap && parse_radiotap_header) {
-            parse_radiotap(packet, header->caplen);
-        }
-
         printf("=== Disassociation Frame ===\n");
         if (disassoc.ordered) {
             printf("Address 1: " MACSTR "\n", MAC2STR(disassoc.frame_header.ordered.addr1));
@@ -295,10 +285,6 @@ void parse_assoc_request(struct libwifi_frame frame, unsigned char *args, const 
             return;
         }
 
-        if (got_radiotap && parse_radiotap_header) {
-            parse_radiotap(packet, header->caplen);
-        }
-
         print_sta_info(&sta);
     }
 }
@@ -310,10 +296,6 @@ void parse_assoc_response(struct libwifi_frame frame, unsigned char *args, const
             printf("Failed to parse association response: %d\n", ret);
             pcap_dump(args, header, packet);
             return;
-        }
-
-        if (got_radiotap && parse_radiotap_header) {
-            parse_radiotap(packet, header->caplen);
         }
 
         print_bss_info(&bss);
@@ -329,10 +311,6 @@ void parse_reassoc_request(struct libwifi_frame frame, unsigned char *args, cons
             return;
         }
 
-        if (got_radiotap && parse_radiotap_header) {
-            parse_radiotap(packet, header->caplen);
-        }
-
         print_sta_info(&sta);
     }
 }
@@ -344,10 +322,6 @@ void parse_reassoc_response(struct libwifi_frame frame, unsigned char *args, con
             printf("Failed to parse reassociation response: %d\n", ret);
             pcap_dump(args, header, packet);
             return;
-        }
-
-        if (got_radiotap && parse_radiotap_header) {
-            parse_radiotap(packet, header->caplen);
         }
 
         print_bss_info(&bss);
@@ -425,6 +399,10 @@ void parse_packet(unsigned char *args, const struct pcap_pkthdr *header, const u
     if (ret != 0) {
         printf("[!] Error getting libwifi_frame: %d\n", ret);
         return;
+    }
+
+    if (got_radiotap && parse_radiotap_header && frame.flags & LIBWIFI_FLAGS_RADIOTAP_PRESENT) {
+        parse_radiotap(&frame);
     }
 
     memset(&bss, 0, sizeof(struct libwifi_bss));

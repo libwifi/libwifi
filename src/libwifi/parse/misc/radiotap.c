@@ -47,6 +47,23 @@ int libwifi_parse_radiotap_info(struct libwifi_radiotap_info *info, const unsign
             case IEEE80211_RADIOTAP_CHANNEL:
                 info->channel.freq = le16toh(*(uint16_t *) it.this_arg);
                 info->channel.flags = le16toh(*(uint16_t *) (it.this_arg + 2));
+
+                // Handle band and channel
+                if (info->channel.freq >= 2412 && info->channel.freq <= 2484) {
+                    info->channel.band |= LIBWIFI_RADIOTAP_BAND_2GHZ;
+                    if (info->channel.freq == 2484) {
+                        info->channel.center = 14;
+                    } else {
+                        info->channel.center = (info->channel.freq - 2407) / 5;
+                    }
+                } else if (info->channel.freq >= 5160 && info->channel.freq <= 5885) {
+                    info->channel.band |= LIBWIFI_RADIOTAP_BAND_5GHZ;
+                    info->channel.center = (info->channel.freq - 5000) / 5;
+                } else if (info->channel.freq >= 5955 && info->channel.freq <= 7115) {
+                    info->channel.band |= LIBWIFI_RADIOTAP_BAND_6GHZ;
+                    info->channel.center = (info->channel.freq - 5950) / 5;
+                }
+
                 break;
             case IEEE80211_RADIOTAP_RATE:
                 info->rate_raw = *it.this_arg;

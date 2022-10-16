@@ -244,6 +244,13 @@ struct libwifi_tag_vendor_header {
     int8_t type;
 } __attribute__((packed));
 
+/*
+ * Element extension tagged parameters have a tag number
+ */
+struct libwifi_tag_extension_header {
+    uint8_t tag_num;
+} __attribute__((packed));
+
 /**
  * Add a tagged parameter to a list of frame tagged parameters.
  *
