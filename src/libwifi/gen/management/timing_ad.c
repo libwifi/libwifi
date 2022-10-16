@@ -79,6 +79,7 @@ int libwifi_create_timing_advert(struct libwifi_timing_advert *adv,
             offset += sizeof(adv_fields->time_error);
             memcpy(element_data + offset, &adv_fields->time_update, sizeof(adv_fields->time_update));
             offset += sizeof(adv_fields->time_update);
+            break;
         }
         default:
             break;
