@@ -22,7 +22,7 @@
 size_t libwifi_add_action_detail(struct libwifi_action_detail *detail, const unsigned char *data,
                                  size_t data_len) {
     if (detail->detail_length != 0) {
-        detail->detail = realloc(detail->detail, data_len);
+        detail->detail = realloc(detail->detail, data_len + detail->detail_length);
     } else {
         detail->detail = malloc(data_len);
     }
@@ -31,10 +31,8 @@ size_t libwifi_add_action_detail(struct libwifi_action_detail *detail, const uns
         return -EINVAL;
     }
 
-    detail->detail_length = data_len;
-
-    memcpy(detail->detail, data, data_len);
-    detail->detail_length = data_len;
+    memcpy(detail->detail + detail->detail_length, data, data_len);
+    detail->detail_length += data_len;
 
     return detail->detail_length;
 }
