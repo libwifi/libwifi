@@ -317,7 +317,10 @@ EXPORT
 int ieee80211_radiotap_iterator_next(struct ieee80211_radiotap_iterator *iterator) {
     while (1) {
         int hit = 0;
-        int pad, align, size, subns;
+        int pad = 0;
+        int align = 0;
+        int size = 0;
+        int subns = 0;
         uint32_t oui;
 
         /* if no more EXT bits, that's it */

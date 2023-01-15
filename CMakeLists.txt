@@ -7,11 +7,29 @@ execute_process(COMMAND git log -1 --pretty=format:%h OUTPUT_STRIP_TRAILING_WHIT
 execute_process(COMMAND date OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE BUILDTIME)
 set(LIBWIFI_VERSION "0.0.8")
 
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu17")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pedantic -Wno-language-extension-token")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wformat=2")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fstack-protector-strong -D_FORTIFY_SOURCE=2 ")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wmissing-prototypes -Wstrict-prototypes")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fstack-protector-strong")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2")
+
+if(CMAKE_CXX_COMPILER_ID MATCHES "^(Apple)?Clang$")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Walloca -Wformat-security -Wnull-dereference -Wstack-protector")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wvla -Warray-bounds -Warray-bounds-pointer-arithmetic -Wassign-enum -Wbad-function-cast")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wconditional-uninitialized -Wfloat-equal -Wformat-type-confusion -Widiomatic-parentheses")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wimplicit-fallthrough -Wloop-analysis -Wpointer-arith")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wswitch-enum -Wtautological-constant-in-range-compare -Wunreachable-code-aggressive -Wcomma")
+else()
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wformat-overflow=2 -Wformat-truncation=2 -Wformat-security -Wnull-dereference -Wstack-protector")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wtrampolines -Walloca -Wvla -Warray-bounds=2 -Wimplicit-fallthrough=3 -Wtraditional-conversion")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wshift-overflow=2 -Wcast-qual -Wstringop-overflow=4 -Wconversion -Wlogical-op")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wduplicated-cond -Wduplicated-branches -Wformat-signedness -Wshadow -Wstrict-overflow=4 -Wundef")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wstrict-prototypes -Wswitch-default -Wswitch-enum -Wstack-usage=1000000 -Wcast-align=strict")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fstack-clash-protection -Wl,-z,relro -Wl,-z,now -Wl,-z,noexecstack -Wl,-z,separate-code")
+endif(CMAKE_CXX_COMPILER_ID MATCHES "^(Apple)?Clang$")
+
+
 
 set(CMAKE_MACOSX_RPATH 1)
 
@@ -50,6 +68,7 @@ set_target_properties(wifi PROPERTIES SOVERSION 0)
 set_target_properties(wifi PROPERTIES PUBLIC_HEADER src/libwifi.h)
 
 add_library(wifi_static STATIC ${libwifi_src})
+set_target_properties(wifi_static PROPERTIES COMPILE_FLAGS "${CMAKE_C_FLAGS} -fPIE")
 set_target_properties(wifi_static PROPERTIES LINKER_LANGUAGE C)
 set_target_properties(wifi_static PROPERTIES VERSION ${LIBWIFI_VERSION})
 set_target_properties(wifi_static PROPERTIES PUBLIC_HEADER src/libwifi.h)
