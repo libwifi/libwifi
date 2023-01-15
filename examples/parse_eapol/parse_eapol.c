@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <inttypes.h>
 
 static int has_radiotap = 0;
 
@@ -38,7 +39,7 @@ void handle_pkt(unsigned char *args, const struct pcap_pkthdr *header, const uns
             printf("EAPOL: Descriptor: %d\n", data.descriptor);
             printf("EAPOL: Key Info: Information: 0x%04x\n", data.key_info.information);
             printf("EAPOL: Key Info: Key Length: %d\n", data.key_info.key_length);
-            printf("EAPOL: Key Info: Replay Counter: %llu\n", data.key_info.replay_counter);
+            printf("EAPOL: Key Info: Replay Counter: %" PRIu64 "\n", data.key_info.replay_counter);
             printf("EAPOL: Key Info: Nonce: ");
             for (size_t i = 0; i < sizeof(data.key_info.nonce); ++i) {
                 printf("%02x ", data.key_info.nonce[i]);
