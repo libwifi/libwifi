@@ -45,9 +45,6 @@ int libwifi_create_disassoc(struct libwifi_disassoc *disassoc,
     memcpy(&disassoc->frame_header.addr1, receiver, 6);
     memcpy(&disassoc->frame_header.addr2, transmitter, 6);
     memcpy(&disassoc->frame_header.addr3, address3, 6);
-
-    disassoc->frame_header.seq_control.sequence_number = (rand() % 4096);
-
     memcpy(&disassoc->fixed_parameters.reason_code, &reason_code, sizeof(reason_code));
 
     return 0;

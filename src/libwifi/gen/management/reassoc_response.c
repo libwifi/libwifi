@@ -73,10 +73,8 @@ int libwifi_create_reassoc_resp(struct libwifi_reassoc_resp *reassoc_resp,
     memcpy(&reassoc_resp->frame_header.addr1, receiver, 6);
     memcpy(&reassoc_resp->frame_header.addr2, transmitter, 6);
     memcpy(&reassoc_resp->frame_header.addr3, address3, 6);
-
     reassoc_resp->fixed_parameters.capabilities_information = BYTESWAP16(LIBWIFI_DEFAULT_AP_CAPABS);
     reassoc_resp->fixed_parameters.status_code = STATUS_SUCCESS;
-    reassoc_resp->fixed_parameters.association_id = rand() % 4096;
 
     int ret = libwifi_set_reassoc_resp_channel(reassoc_resp, channel);
 

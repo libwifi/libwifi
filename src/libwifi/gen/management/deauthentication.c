@@ -45,9 +45,6 @@ int libwifi_create_deauth(struct libwifi_deauth *deauth,
     memcpy(&deauth->frame_header.addr1, receiver, 6);
     memcpy(&deauth->frame_header.addr2, transmitter, 6);
     memcpy(&deauth->frame_header.addr3, address3, 6);
-
-    deauth->frame_header.seq_control.sequence_number = (rand() % 4096);
-
     memcpy(&deauth->fixed_parameters.reason_code, &reason_code, sizeof(reason_code));
 
     return 0;

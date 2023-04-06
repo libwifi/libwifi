@@ -29,9 +29,6 @@ int libwifi_create_atim(struct libwifi_atim *atim,
     memcpy(&atim->frame_header.addr1, transmitter, 6);
     memcpy(&atim->frame_header.addr2, receiver, 6);
     memcpy(&atim->frame_header.addr3, address3, 6);
-    atim->frame_header.frame_control.flags.power_mgmt = 1;
-    atim->frame_header.duration = (rand() % 4096);
-    atim->frame_header.seq_control.sequence_number = (rand() % 4096);
 
     return 0;
 }

@@ -44,7 +44,6 @@ int libwifi_create_probe_req(struct libwifi_probe_req *probe_req,
     memcpy(&probe_req->frame_header.addr1, receiver, 6);
     memcpy(&probe_req->frame_header.addr2, transmitter, 6);
     memcpy(&probe_req->frame_header.addr3, address3, 6);
-    probe_req->frame_header.seq_control.sequence_number = (rand() % 4096);
 
     int ret = libwifi_quick_add_tag(&probe_req->tags, TAG_SSID, (const unsigned char *) ssid, strlen(ssid));
     if (ret != 0) {

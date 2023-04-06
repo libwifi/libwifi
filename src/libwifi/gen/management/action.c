@@ -56,9 +56,6 @@ int libwifi_create_action(struct libwifi_action *action,
     memcpy(&action->frame_header.addr1, receiver, 6);
     memcpy(&action->frame_header.addr2, transmitter, 6);
     memcpy(&action->frame_header.addr3, address3, 6);
-
-    action->frame_header.seq_control.sequence_number = (rand() % 4096);
-
     action->fixed_parameters.category = category;
 
     return 0;
@@ -76,9 +73,6 @@ int libwifi_create_action_no_ack(struct libwifi_action *action,
     memcpy(&action->frame_header.addr1, receiver, 6);
     memcpy(&action->frame_header.addr2, transmitter, 6);
     memcpy(&action->frame_header.addr3, address3, 6);
-
-    action->frame_header.seq_control.sequence_number = (rand() % 4096);
-
     action->fixed_parameters.category = category;
 
     return 0;
@@ -102,6 +96,7 @@ size_t libwifi_dump_action(struct libwifi_action *action, unsigned char *buf, si
 
     memcpy(buf + offset, &action->fixed_parameters.category, sizeof(action->fixed_parameters.category));
     offset += sizeof(action->fixed_parameters.category);
+    
     memcpy(buf + offset, action->fixed_parameters.details.detail,
            action->fixed_parameters.details.detail_length);
     offset += action->fixed_parameters.details.detail_length;

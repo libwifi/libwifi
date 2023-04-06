@@ -52,7 +52,6 @@ int libwifi_set_assoc_resp_channel(struct libwifi_assoc_resp *assoc_resp, uint8_
     }
 
     const unsigned char *chan = (const unsigned char *) &channel;
-
     ret = libwifi_quick_add_tag(&assoc_resp->tags, TAG_DS_PARAMETER, chan, 1);
 
     return ret;
@@ -74,10 +73,8 @@ int libwifi_create_assoc_resp(struct libwifi_assoc_resp *assoc_resp,
     memcpy(&assoc_resp->frame_header.addr1, receiver, 6);
     memcpy(&assoc_resp->frame_header.addr2, transmitter, 6);
     memcpy(&assoc_resp->frame_header.addr3, address3, 6);
-
     assoc_resp->fixed_parameters.capabilities_information = BYTESWAP16(LIBWIFI_DEFAULT_AP_CAPABS);
     assoc_resp->fixed_parameters.status_code = STATUS_SUCCESS;
-    assoc_resp->fixed_parameters.association_id = rand() % 4096;
 
     libwifi_set_assoc_resp_channel(assoc_resp, channel);
 

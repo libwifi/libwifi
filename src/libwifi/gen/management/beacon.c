@@ -91,8 +91,6 @@ int libwifi_create_beacon(struct libwifi_beacon *beacon,
     memcpy(&beacon->frame_header.addr1, receiver, 6);
     memcpy(&beacon->frame_header.addr2, transmitter, 6);
     memcpy(&beacon->frame_header.addr3, address3, 6);
-    beacon->frame_header.seq_control.sequence_number = (rand() % 4096);
-
     beacon->fixed_parameters.timestamp = BYTESWAP64(libwifi_get_epoch());
     beacon->fixed_parameters.beacon_interval = BYTESWAP16(LIBWIFI_DEFAULT_BEACON_INTERVAL);
     beacon->fixed_parameters.capabilities_information = BYTESWAP16(LIBWIFI_DEFAULT_AP_CAPABS);
