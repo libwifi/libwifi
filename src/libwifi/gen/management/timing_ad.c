@@ -40,7 +40,6 @@ int libwifi_create_timing_advert(struct libwifi_timing_advert *adv,
     memcpy(&adv->frame_header.addr1, destination, 6);
     memcpy(&adv->frame_header.addr2, transmitter, 6);
     memcpy(&adv->frame_header.addr3, address3, 6);
-    adv->frame_header.seq_control.sequence_number = (rand() % 4096);
 
     adv->fixed_parameters.timestamp = BYTESWAP64(libwifi_get_epoch());
     adv->fixed_parameters.measurement_pilot_interval = LIBWIFI_DEFAULT_BEACON_INTERVAL;

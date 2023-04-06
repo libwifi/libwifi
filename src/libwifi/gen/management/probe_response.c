@@ -91,11 +91,8 @@ int libwifi_create_probe_resp(struct libwifi_probe_resp *probe_resp,
     memcpy(&probe_resp->frame_header.addr1, receiver, 6);
     memcpy(&probe_resp->frame_header.addr2, transmitter, 6);
     memcpy(&probe_resp->frame_header.addr3, address3, 6);
-
-    probe_resp->frame_header.seq_control.sequence_number = (rand() % 4096);
     probe_resp->fixed_parameters.timestamp = BYTESWAP64(libwifi_get_epoch());
-    uint16_t probe_resp_interval = 50 + (rand() % 100);
-    probe_resp->fixed_parameters.probe_resp_interval = BYTESWAP16(probe_resp_interval);
+    probe_resp->fixed_parameters.probe_resp_interval = BYTESWAP16(100);
     probe_resp->fixed_parameters.capabilities_information = BYTESWAP16(LIBWIFI_DEFAULT_AP_CAPABS);
 
     int ret = libwifi_set_probe_resp_ssid(probe_resp, ssid);

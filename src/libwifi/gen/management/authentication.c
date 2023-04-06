@@ -46,8 +46,6 @@ int libwifi_create_auth(struct libwifi_auth *auth,
     memcpy(&auth->frame_header.addr1, receiver, 6);
     memcpy(&auth->frame_header.addr2, transmitter, 6);
     memcpy(&auth->frame_header.addr3, address3, 6);
-    auth->frame_header.seq_control.sequence_number = (rand() % 4096);
-
     auth->fixed_parameters.algorithm_number = algorithm_number;
     auth->fixed_parameters.transaction_sequence = transaction_sequence;
     auth->fixed_parameters.status_code = status_code;

@@ -48,8 +48,6 @@ int libwifi_create_reassoc_req(struct libwifi_reassoc_req *reassoc_req,
     memcpy(&reassoc_req->frame_header.addr1, receiver, 6);
     memcpy(&reassoc_req->frame_header.addr2, transmitter, 6);
     memcpy(&reassoc_req->frame_header.addr3, address3, 6);
-    reassoc_req->frame_header.seq_control.sequence_number = (rand() % 4096);
-
     reassoc_req->fixed_parameters.capabilities_information = BYTESWAP16(LIBWIFI_DEFAULT_AP_CAPABS);
     reassoc_req->fixed_parameters.listen_interval = BYTESWAP16(LIBWIFI_DEFAULT_LISTEN_INTERVAL);
     memcpy(&reassoc_req->fixed_parameters.current_ap_address, current_ap, 6);
