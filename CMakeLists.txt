@@ -1,5 +1,17 @@
 cmake_minimum_required(VERSION 3.18)
 
+if (DEFINED ESP_PLATFORM)
+    file(GLOB_RECURSE libwifi_src
+            "src/libwifi/*.h"
+            "src/libwifi/*.c"
+            )
+    idf_component_register(
+            SRCS ${libwifi_src}
+            INCLUDE_DIRS "src/"
+    )
+    return()
+endif()
+
 project(wifi DESCRIPTION "802.11 Parsing / Generation library" VERSION 0.1)
 
 execute_process(COMMAND git rev-parse --abbrev-ref HEAD OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE GITBRANCH)
