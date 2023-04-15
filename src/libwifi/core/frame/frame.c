@@ -38,6 +38,8 @@ int libwifi_get_wifi_frame(struct libwifi_frame *fi, const unsigned char *frame,
     size_t frame_data_len = frame_len;
     const unsigned char *frame_data = frame;
 
+    memset(fi, 0, sizeof(struct libwifi_frame));
+
     if (radiotap) {
         struct libwifi_radiotap_info rtap_info = {0};
         int ret = libwifi_parse_radiotap_info(&rtap_info, frame, frame_len);
@@ -126,12 +128,14 @@ int libwifi_get_wifi_frame(struct libwifi_frame *fi, const unsigned char *frame,
     fi->header_len = header_len;
     memcpy(&fi->frame_control, frame_control, sizeof(struct libwifi_frame_ctrl));
 
-    fi->body = malloc(fi->len - fi->header_len);
-    if (fi->body == NULL) {
-        return -ENOMEM;
+    size_t body_len = fi->len - fi->header_len;
+    if (body_len > 0) {
+        fi->body = malloc(body_len);
+        if (fi->body == NULL) {
+            return -ENOMEM;
+        }
+        memcpy(fi->body, frame_data + header_len, body_len);
     }
-
-    memcpy(fi->body, frame_data + header_len, (fi->len - fi->header_len));
 
     return 0;
 }
