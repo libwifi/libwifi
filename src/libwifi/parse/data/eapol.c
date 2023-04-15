@@ -25,6 +25,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#if defined(ESP_PLATFORM)
+#include "endian.h"
+#endif
+
 /**
  * A libwifi_frame is deemed to be an EAPOL handshake if the following criteria is met:
  * - The frame is of type TYPE_DATA, and
