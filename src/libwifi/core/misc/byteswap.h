@@ -38,7 +38,7 @@
 #define be64toh(x) OSSwapBigToHostInt64(x)
 #define le64toh(x) OSSwapLittleToHostInt64(x)
 #else
-#include <byteswap.h>
+#include "byteswap.h"
 
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
 #define BYTESWAP16(x) x

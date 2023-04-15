@@ -35,6 +35,10 @@
 #include <sys/types.h>
 #endif
 
+#if defined(ESP_PLATFORM)
+#include "endian.h"
+#endif
+
 #ifndef le16_to_cpu
 #define le16_to_cpu le16toh
 #endif
