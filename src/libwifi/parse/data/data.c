@@ -38,7 +38,7 @@ int libwifi_parse_data(struct libwifi_data *data, struct libwifi_frame *frame) {
     if (data->body == NULL) {
         return -ENOMEM;
     }
-    memcpy(frame->body, data->body, data->body_len);
+    memcpy(data->body, frame->body, data->body_len);
 
     return 0;
 }
