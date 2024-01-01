@@ -67,7 +67,7 @@ This project has been configured to be easily applicable as ESP-IDF component
 1. Put `libwifi` folder in `components/`
 2. Open `main/CMakeLists.txt` and add `libwifi` to `COMPONENT_REQUIRES`
 3. In `main/main.c` add `#include "libwifi.h"`
-4. Test by running following code: ```
+4. Test by running following code:
 ```C
 void app_main(void){  
 	printf("libwifi version: %s", libwifi_get_version());  
