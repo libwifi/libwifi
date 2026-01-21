@@ -59,7 +59,11 @@ int libwifi_parse_disassoc(struct libwifi_parsed_disassoc *disassoc, struct libw
         tags_len = (frame->len - sizeof(struct libwifi_mgmt_unordered_frame_header) -
                     sizeof(struct libwifi_disassoc_fixed_parameters));
     }
-
+    
+    if (tags_len < 0) {
+        return -EINVAL;
+    }
+    
     unsigned char *body = (unsigned char *) frame->body;
 
     memcpy(&disassoc->fixed_parameters, body, sizeof(struct libwifi_disassoc_fixed_parameters));
